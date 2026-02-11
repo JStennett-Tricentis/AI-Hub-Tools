@@ -1,0 +1,13 @@
+{
+  "description": "Simple single-turn question without tools - lightweight smoke test template",
+  "model": "{{GENERIC_MODEL_ID}}",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain the difference between synchronous and asynchronous programming in Python."
+    }
+  ],
+  "temperature": 0.7,
+  "max_tokens": 1000,
+  "stream": false
+}

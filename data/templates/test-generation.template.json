@@ -1,0 +1,189 @@
+{
+  "description": "Test generation workflow creating unit tests, integration tests, and test data",
+  "model": "{{GENERIC_MODEL_ID}}",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a test automation expert that generates comprehensive test suites, including unit tests, integration tests, and test data."
+    },
+    {
+      "role": "user",
+      "content": "I need to write tests for this payment processing function:\n\n```python\ndef process_payment(amount, currency, payment_method, customer_id):\n    if amount <= 0:\n        raise ValueError('Amount must be positive')\n    if currency not in ['USD', 'EUR', 'GBP']:\n        raise ValueError('Unsupported currency')\n    \n    customer = get_customer(customer_id)\n    if not customer.is_verified:\n        raise PermissionError('Customer not verified')\n    \n    charge = payment_gateway.charge(\n        amount=amount,\n        currency=currency,\n        method=payment_method,\n        customer=customer_id\n    )\n    \n    save_transaction(charge.id, amount, currency, customer_id)\n    send_receipt(customer.email, charge.id)\n    \n    return charge\n```"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_analyze_001",
+          "type": "function",
+          "function": {
+            "name": "analyze_code_for_testing",
+            "arguments": "{\"code\": \"def process_payment(amount, currency, payment_method, customer_id):\\n    if amount <= 0:\\n        raise ValueError('Amount must be positive')\\n    if currency not in ['USD', 'EUR', 'GBP']:\\n        raise ValueError('Unsupported currency')\\n    \\n    customer = get_customer(customer_id)\\n    if not customer.is_verified:\\n        raise PermissionError('Customer not verified')\\n    \\n    charge = payment_gateway.charge(\\n        amount=amount,\\n        currency=currency,\\n        method=payment_method,\\n        customer=customer_id\\n    )\\n    \\n    save_transaction(charge.id, amount, currency, customer_id)\\n    send_receipt(customer.email, charge.id)\\n    \\n    return charge\", \"language\": \"python\", \"identify_edge_cases\": true, \"identify_dependencies\": true}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_analyze_001",
+      "content": "{\"test_scenarios\": [{\"type\": \"happy_path\", \"description\": \"Valid payment with verified customer\"}, {\"type\": \"edge_case\", \"description\": \"Zero amount\"}, {\"type\": \"edge_case\", \"description\": \"Negative amount\"}, {\"type\": \"edge_case\", \"description\": \"Unsupported currency\"}, {\"type\": \"error_case\", \"description\": \"Unverified customer\"}, {\"type\": \"error_case\", \"description\": \"Payment gateway failure\"}], \"dependencies\": [\"get_customer\", \"payment_gateway.charge\", \"save_transaction\", \"send_receipt\"], \"complexity\": \"medium\", \"recommended_test_count\": 8}"
+    },
+    {
+      "role": "assistant",
+      "content": "I've identified 6 key test scenarios and 4 dependencies to mock. Let me generate the test suite."
+    },
+    {
+      "role": "user",
+      "content": "Please generate pytest tests with fixtures and also create test data."
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_gen_tests_001",
+          "type": "function",
+          "function": {
+            "name": "generate_test_suite",
+            "arguments": "{\"function_name\": \"process_payment\", \"language\": \"python\", \"framework\": \"pytest\", \"test_types\": [\"unit\", \"integration\"], \"include_fixtures\": true, \"include_mocks\": true, \"scenarios\": [\"happy_path\", \"edge_cases\", \"error_handling\"]}"
+          }
+        },
+        {
+          "id": "call_gen_data_001",
+          "type": "function",
+          "function": {
+            "name": "generate_test_data",
+            "arguments": "{\"data_type\": \"payment_transactions\", \"record_count\": 50, \"include_edge_cases\": true, \"format\": \"json\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_gen_tests_001",
+      "content": "{\"test_file\": \"test_payment.py\", \"test_count\": 8, \"fixture_count\": 4, \"mock_count\": 4, \"coverage_estimate\": \"95%\", \"features\": [\"parametrized_tests\", \"fixtures\", \"mocking\", \"assertions\", \"error_testing\"]}"
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_gen_data_001",
+      "content": "{\"file\": \"test_data/payment_transactions.json\", \"records_generated\": 50, \"includes\": [\"valid_payments\", \"invalid_amounts\", \"unsupported_currencies\", \"unverified_customers\", \"boundary_values\"]}"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "analyze_code_for_testing",
+        "description": "Analyzes code to identify test scenarios, edge cases, and dependencies that need mocking.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "Code to analyze for testing"
+            },
+            "language": {
+              "type": "string",
+              "enum": ["python", "javascript", "java", "csharp", "go", "rust"],
+              "description": "Programming language"
+            },
+            "identify_edge_cases": {
+              "type": "boolean",
+              "description": "Whether to identify edge cases"
+            },
+            "identify_dependencies": {
+              "type": "boolean",
+              "description": "Whether to identify external dependencies"
+            }
+          },
+          "required": ["code", "language"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "generate_test_suite",
+        "description": "Generates a comprehensive test suite with unit tests, integration tests, fixtures, and mocks.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "function_name": {
+              "type": "string",
+              "description": "Name of function to test"
+            },
+            "language": {
+              "type": "string",
+              "enum": ["python", "javascript", "java", "csharp", "go", "rust"],
+              "description": "Programming language"
+            },
+            "framework": {
+              "type": "string",
+              "enum": ["pytest", "unittest", "jest", "mocha", "junit", "nunit", "xunit"],
+              "description": "Testing framework to use"
+            },
+            "test_types": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["unit", "integration", "e2e"]
+              },
+              "description": "Types of tests to generate"
+            },
+            "include_fixtures": {
+              "type": "boolean",
+              "description": "Whether to include test fixtures"
+            },
+            "include_mocks": {
+              "type": "boolean",
+              "description": "Whether to include mocks for dependencies"
+            },
+            "scenarios": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["happy_path", "edge_cases", "error_handling", "boundary_conditions"]
+              },
+              "description": "Test scenarios to cover"
+            }
+          },
+          "required": ["function_name", "language", "framework"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "generate_test_data",
+        "description": "Generates realistic test data including edge cases and boundary values.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "data_type": {
+              "type": "string",
+              "description": "Type of test data to generate (e.g., users, transactions, products)"
+            },
+            "record_count": {
+              "type": "integer",
+              "description": "Number of test records to generate"
+            },
+            "include_edge_cases": {
+              "type": "boolean",
+              "description": "Whether to include edge case values"
+            },
+            "format": {
+              "type": "string",
+              "enum": ["json", "csv", "xml", "sql"],
+              "description": "Output format for test data"
+            }
+          },
+          "required": ["data_type", "record_count", "format"]
+        }
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "temperature": 0.3,
+  "max_tokens": 3000,
+  "stream": false,
+  "parallel_tool_calls": true
+}

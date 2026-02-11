@@ -1,0 +1,24 @@
+{
+  "name": "migration",
+  "description": "Database and code migration profile for refactoring and modernization tasks",
+  "defaults": {
+    "turns": 6,
+    "includeTools": true,
+    "toolCount": 4,
+    "includeSystemPrompt": true,
+    "topic": "database migration",
+    "temperature": 0.4,
+    "maxTokens": 4096,
+    "parallelToolCalls": true
+  },
+  "recommendedTools": [
+    "analyze_schema",
+    "generate_migration_script",
+    "validate_data_integrity",
+    "execute_migration"
+  ],
+  "examples": [
+    "dotnet run -- -p migration -m gpt-4o-2024-08-06",
+    "dotnet run -- -p migration --topic 'PostgreSQL to MongoDB migration'"
+  ]
+}

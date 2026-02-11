@@ -1,0 +1,177 @@
+{
+  "description": "Performance optimization workflow analyzing code bottlenecks and suggesting improvements",
+  "model": "{{GENERIC_MODEL_ID}}",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a performance optimization expert that identifies bottlenecks, suggests improvements, and helps optimize code for speed and efficiency."
+    },
+    {
+      "role": "user",
+      "content": "My Node.js API is responding slowly under load. Here's the main handler:\n\n```javascript\napp.get('/api/users', async (req, res) => {\n  const users = await db.collection('users').find({}).toArray();\n  const enrichedUsers = [];\n  for (const user of users) {\n    const profile = await db.collection('profiles').findOne({ userId: user._id });\n    const posts = await db.collection('posts').find({ userId: user._id }).toArray();\n    enrichedUsers.push({ ...user, profile, posts });\n  }\n  res.json(enrichedUsers);\n});\n```"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_perf_001",
+          "type": "function",
+          "function": {
+            "name": "analyze_performance",
+            "arguments": "{\"code\": \"app.get('/api/users', async (req, res) => {\\n  const users = await db.collection('users').find({}).toArray();\\n  const enrichedUsers = [];\\n  for (const user of users) {\\n    const profile = await db.collection('profiles').findOne({ userId: user._id });\\n    const posts = await db.collection('posts').find({ userId: user._id }).toArray();\\n    enrichedUsers.push({ ...user, profile, posts });\\n  }\\n  res.json(enrichedUsers);\\n});\", \"language\": \"javascript\", \"metrics\": [\"database_optimization\", \"complexity\", \"memory\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_perf_001",
+      "content": "{\"issues\": [{\"type\": \"n_plus_1_query\", \"severity\": \"critical\", \"line\": 4, \"description\": \"Sequential database queries in loop causing N+1 problem\", \"estimated_slowdown\": \"100x for 1000 users\"}, {\"type\": \"missing_pagination\", \"severity\": \"high\", \"description\": \"Loading all users without pagination\", \"impact\": \"High memory usage and slow response\"}], \"complexity\": \"O(n²)\", \"memory_usage\": \"high\"}"
+    },
+    {
+      "role": "assistant",
+      "content": "I found critical performance issues: N+1 query problem and missing pagination. Let me suggest optimizations."
+    },
+    {
+      "role": "user",
+      "content": "Please provide an optimized version with parallel queries and pagination."
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_optimize_001",
+          "type": "function",
+          "function": {
+            "name": "generate_optimized_code",
+            "arguments": "{\"original_code\": \"app.get('/api/users', async (req, res) => {...}\", \"optimizations\": [\"add_pagination\", \"batch_queries\", \"add_caching\", \"add_indexing_hints\"], \"language\": \"javascript\", \"framework\": \"express\"}"
+          }
+        },
+        {
+          "id": "call_benchmark_001",
+          "type": "function",
+          "function": {
+            "name": "estimate_performance_gain",
+            "arguments": "{\"optimization_type\": \"database_query_batching\", \"current_complexity\": \"O(n²)\", \"optimized_complexity\": \"O(n)\", \"data_size\": 1000}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_optimize_001",
+      "content": "{\"optimized_code\": \"app.get('/api/users', async (req, res) => {\\n  const page = parseInt(req.query.page) || 1;\\n  const limit = 50;\\n  const skip = (page - 1) * limit;\\n  \\n  const users = await db.collection('users').find({}).skip(skip).limit(limit).toArray();\\n  const userIds = users.map(u => u._id);\\n  \\n  const [profiles, posts] = await Promise.all([\\n    db.collection('profiles').find({ userId: { $in: userIds } }).toArray(),\\n    db.collection('posts').find({ userId: { $in: userIds } }).toArray()\\n  ]);\\n  \\n  const profileMap = new Map(profiles.map(p => [p.userId, p]));\\n  const postMap = posts.reduce((acc, post) => {\\n    acc[post.userId] = acc[post.userId] || [];\\n    acc[post.userId].push(post);\\n    return acc;\\n  }, {});\\n  \\n  const enrichedUsers = users.map(user => ({\\n    ...user,\\n    profile: profileMap.get(user._id),\\n    posts: postMap[user._id] || []\\n  }));\\n  \\n  res.json(enrichedUsers);\\n});\", \"improvements\": [\"Added pagination (50 per page)\", \"Batch queries using $in operator\", \"Parallel execution with Promise.all\", \"In-memory mapping instead of nested loops\"]}"
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_benchmark_001",
+      "content": "{\"performance_gain\": \"95% faster\", \"response_time_before\": \"12000ms\", \"response_time_after\": \"600ms\", \"memory_reduction\": \"80%\", \"database_queries_before\": 2001, \"database_queries_after\": 3}"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "analyze_performance",
+        "description": "Analyzes code for performance bottlenecks, inefficiencies, and optimization opportunities.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "Code to analyze"
+            },
+            "language": {
+              "type": "string",
+              "enum": ["javascript", "python", "java", "csharp", "go", "rust"],
+              "description": "Programming language"
+            },
+            "metrics": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["database_optimization", "complexity", "memory", "cpu", "network"]
+              },
+              "description": "Performance metrics to analyze"
+            }
+          },
+          "required": ["code", "language", "metrics"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "generate_optimized_code",
+        "description": "Generates an optimized version of code with performance improvements applied.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "original_code": {
+              "type": "string",
+              "description": "Code to optimize"
+            },
+            "optimizations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "add_pagination",
+                  "batch_queries",
+                  "add_caching",
+                  "add_indexing_hints",
+                  "use_connection_pooling",
+                  "reduce_allocations"
+                ]
+              },
+              "description": "Optimization techniques to apply"
+            },
+            "language": {
+              "type": "string",
+              "description": "Programming language"
+            },
+            "framework": {
+              "type": "string",
+              "description": "Framework being used"
+            }
+          },
+          "required": ["original_code", "optimizations", "language"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "estimate_performance_gain",
+        "description": "Estimates performance improvements from proposed optimizations.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "optimization_type": {
+              "type": "string",
+              "description": "Type of optimization being applied"
+            },
+            "current_complexity": {
+              "type": "string",
+              "description": "Current Big-O complexity"
+            },
+            "optimized_complexity": {
+              "type": "string",
+              "description": "Expected optimized complexity"
+            },
+            "data_size": {
+              "type": "integer",
+              "description": "Typical data size to process"
+            }
+          },
+          "required": ["optimization_type", "current_complexity", "optimized_complexity"]
+        }
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "temperature": 0.5,
+  "max_tokens": 3000,
+  "stream": false,
+  "parallel_tool_calls": true
+}

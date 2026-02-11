@@ -1,0 +1,196 @@
+{
+  "description": "Multi-turn conversation with code analysis tools - tests conversation history, complex tool definitions, and sequential tool usage",
+  "model": "{{GENERIC_MODEL_ID}}",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a code review assistant that analyzes code for security vulnerabilities, performance issues, and best practices."
+    },
+    {
+      "role": "user",
+      "content": "Please analyze this Python function for security issues:\n\n```python\ndef execute_query(db_connection, user_input):\n    query = f\"SELECT * FROM users WHERE username = '{user_input}'\"\n    return db_connection.execute(query).fetchall()\n```"
+    },
+    {
+      "role": "assistant",
+      "content": "I'll analyze this code for security vulnerabilities.",
+      "tool_calls": [
+        {
+          "id": "call_sec_scan_001",
+          "type": "function",
+          "function": {
+            "name": "analyze_code_security",
+            "arguments": "{'code': 'def execute_query(db_connection, user_input):\\n    query = f\\'SELECT * FROM users WHERE username = \\'{user_input}\\'\\' \\n    return db_connection.execute(query).fetchall()', 'language': 'python', 'check_types': ['sql_injection', 'xss', 'path_traversal', 'command_injection']}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_sec_scan_001",
+      "content": "{'vulnerabilities': [{'type': 'sql_injection', 'severity': 'critical', 'line': 2, 'description': 'Direct string interpolation of user input into SQL query', 'cwe': 'CWE-89'}], 'score': 2.5}"
+    },
+    {
+      "role": "assistant",
+      "content": "I found a critical SQL injection vulnerability. Let me suggest a secure alternative."
+    },
+    {
+      "role": "user",
+      "content": "Yes, please provide a secure version and also check it for performance issues."
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_gen_fix_001",
+          "type": "function",
+          "function": {
+            "name": "generate_secure_code",
+            "arguments": "{'vulnerable_code': 'def execute_query(db_connection, user_input):\\n    query = f\\'SELECT * FROM users WHERE username = \\'{user_input}\\'\\' \\n    return db_connection.execute(query).fetchall()', 'vulnerability_type': 'sql_injection', 'language': 'python'}"
+          }
+        },
+        {
+          "id": "call_perf_001",
+          "type": "function",
+          "function": {
+            "name": "analyze_performance",
+            "arguments": "{'code': 'def execute_query(db_connection, user_input):\\n    query = f\\'SELECT * FROM users WHERE username = \\'{user_input}\\'\\' \\n    return db_connection.execute(query).fetchall()', 'language': 'python', 'metrics': ['complexity', 'memory', 'database_optimization']}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_gen_fix_001",
+      "content": "{'fixed_code': 'def execute_query(db_connection, username):\\n    query = \\'SELECT * FROM users WHERE username = ?\\'\\n    return db_connection.execute(query, (username,)).fetchall()', 'explanation': 'Uses parameterized queries to prevent SQL injection'}"
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_perf_001",
+      "content": "{'issues': [{'type': 'inefficient_query', 'severity': 'medium', 'description': 'SELECT * fetches all columns; specify only needed columns', 'suggestion': 'SELECT id, username, email FROM users WHERE username = ?'}], 'complexity_score': 'O(n)', 'recommendations': ['Add index on username column', 'Use query result limit']}"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "analyze_code_security",
+        "description": "Analyzes code for security vulnerabilities including SQL injection, XSS, CSRF, and other common security issues. Returns vulnerability details with severity ratings.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "The source code to analyze"
+            },
+            "language": {
+              "type": "string",
+              "enum": ["python", "javascript", "java", "csharp", "go", "rust", "php"],
+              "description": "Programming language of the code"
+            },
+            "check_types": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "sql_injection",
+                  "xss",
+                  "csrf",
+                  "path_traversal",
+                  "command_injection",
+                  "xxe",
+                  "ssrf",
+                  "deserialization"
+                ]
+              },
+              "description": "Specific vulnerability types to check for"
+            },
+            "severity_threshold": {
+              "type": "string",
+              "enum": ["low", "medium", "high", "critical"],
+              "description": "Minimum severity level to report"
+            }
+          },
+          "required": ["code", "language"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "generate_secure_code",
+        "description": "Generates a secure version of vulnerable code by applying security best practices and remediation techniques.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "vulnerable_code": {
+              "type": "string",
+              "description": "The vulnerable code to fix"
+            },
+            "vulnerability_type": {
+              "type": "string",
+              "description": "Type of vulnerability to remediate"
+            },
+            "language": {
+              "type": "string",
+              "enum": ["python", "javascript", "java", "csharp", "go", "rust", "php"],
+              "description": "Programming language"
+            },
+            "framework": {
+              "type": "string",
+              "description": "Optional framework being used (e.g., Django, Flask, Express)"
+            }
+          },
+          "required": ["vulnerable_code", "vulnerability_type", "language"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "analyze_performance",
+        "description": "Analyzes code for performance issues, complexity, and optimization opportunities.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "Code to analyze for performance"
+            },
+            "language": {
+              "type": "string",
+              "enum": ["python", "javascript", "java", "csharp", "go", "rust", "php"],
+              "description": "Programming language"
+            },
+            "metrics": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["complexity", "memory", "cpu", "io", "database_optimization", "network"]
+              },
+              "description": "Performance metrics to analyze"
+            },
+            "context": {
+              "type": "object",
+              "properties": {
+                "expected_load": {
+                  "type": "integer",
+                  "description": "Expected requests per second"
+                },
+                "data_size": {
+                  "type": "string",
+                  "description": "Expected data size (e.g., '1GB', '100MB')"
+                }
+              }
+            }
+          },
+          "required": ["code", "language", "metrics"]
+        }
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "temperature": 0.3,
+  "max_tokens": 4096,
+  "stream": false,
+  "parallel_tool_calls": true
+}

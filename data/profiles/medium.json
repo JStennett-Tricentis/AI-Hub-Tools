@@ -1,0 +1,15 @@
+{
+  "name": "medium",
+  "description": "Medium complexity request with multiple conversation turns and system prompt - good for standard testing",
+  "defaults": {
+    "turns": 3,
+    "includeTools": false,
+    "includeSystemPrompt": true,
+    "temperature": 0.7,
+    "maxTokens": 2000
+  },
+  "examples": [
+    "dotnet run -- -p medium -m gpt-4o-2024-05-13",
+    "dotnet run -- -p medium -n 5 --topic 'refactoring'"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "performance",
+  "description": "Performance optimization profile for analyzing and improving code efficiency",
+  "defaults": {
+    "turns": 6,
+    "includeTools": true,
+    "toolCount": 3,
+    "includeSystemPrompt": true,
+    "topic": "performance optimization",
+    "temperature": 0.5,
+    "maxTokens": 3000,
+    "parallelToolCalls": true
+  },
+  "recommendedTools": ["analyze_performance", "profile_code", "suggest_optimizations"],
+  "examples": [
+    "dotnet run -- -p performance -m gpt-4o-2024-05-13",
+    "dotnet run -- -p performance --language rust --domain 'database queries'"
+  ]
+}

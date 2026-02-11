@@ -1,0 +1,20 @@
+{
+  "name": "qtest",
+  "description": "qTest test case generation profile for QA teams - generates structured JSON test cases",
+  "defaults": {
+    "turns": 2,
+    "includeTools": false,
+    "includeSystemPrompt": true,
+    "systemPrompt": "You are a QA engineer writing testcase to validate the given requirement. Testcase should be written in the following JSON format with no new lines : {\"name\":\"testcase name\",\"description\":\"testcase description\",\"testSteps\":[{\"description\":\"description\",\"expected\":\"expected result\"}]}. Include module description and explanation of test objective in testcase description. Include inputs and instructions to perform the test in the teststep description and instructions to validate the result in the teststep expected result. Include sufficient number of teststeps to satisfy test objective.",
+    "topic": "web application authentication",
+    "temperature": 0.75,
+    "maxTokens": 4000,
+    "stream": false,
+    "user": "qtest"
+  },
+  "examples": [
+    "dotnet run -- -p qtest --topic '2FA authentication with Microsoft Authenticator'",
+    "dotnet run -- -p qtest --topic 'password reset flow' -m gpt-4o-2024-05-13",
+    "dotnet run -- -p qtest -o qtest-batch.json"
+  ]
+}

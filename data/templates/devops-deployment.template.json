@@ -1,0 +1,177 @@
+{
+  "description": "DevOps deployment workflow with CI/CD tools and infrastructure management",
+  "model": "{{GENERIC_MODEL_ID}}",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a DevOps assistant that helps with deployment workflows, infrastructure automation, and CI/CD pipeline configuration."
+    },
+    {
+      "role": "user",
+      "content": "I need to deploy a microservices application to Kubernetes. The application has 5 services: API gateway, authentication service, user service, product service, and notification service. What's the best approach?"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_k8s_analyze_001",
+          "type": "function",
+          "function": {
+            "name": "analyze_infrastructure",
+            "arguments": "{\"application_type\": \"microservices\", \"service_count\": 5, \"platform\": \"kubernetes\", \"requirements\": [\"high_availability\", \"auto_scaling\", \"service_mesh\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_k8s_analyze_001",
+      "content": "{\"recommendations\": [{\"component\": \"ingress\", \"suggestion\": \"Use NGINX Ingress Controller for API gateway\"}, {\"component\": \"service_mesh\", \"suggestion\": \"Deploy Istio for inter-service communication\"}, {\"component\": \"autoscaling\", \"suggestion\": \"Configure HorizontalPodAutoscaler for each service\"}], \"estimated_resources\": {\"cpu\": \"8 cores\", \"memory\": \"32GB\", \"storage\": \"100GB\"}}"
+    },
+    {
+      "role": "assistant",
+      "content": "Based on the analysis, I recommend using NGINX Ingress Controller, Istio service mesh, and configuring autoscaling. Let me generate the deployment manifests."
+    },
+    {
+      "role": "user",
+      "content": "Great! Can you also set up a CI/CD pipeline for automated deployments?"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_cicd_gen_001",
+          "type": "function",
+          "function": {
+            "name": "generate_pipeline_config",
+            "arguments": "{\"platform\": \"github_actions\", \"stages\": [\"build\", \"test\", \"security_scan\", \"deploy\"], \"target_environment\": \"kubernetes\", \"services\": [\"api-gateway\", \"auth-service\", \"user-service\", \"product-service\", \"notification-service\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_cicd_gen_001",
+      "content": "{\"pipeline_file\": \".github/workflows/deploy.yml\", \"stages\": [{\"name\": \"build\", \"duration\": \"5m\", \"actions\": [\"docker build\", \"push to registry\"]}, {\"name\": \"test\", \"duration\": \"10m\", \"actions\": [\"unit tests\", \"integration tests\"]}, {\"name\": \"security_scan\", \"duration\": \"3m\", \"actions\": [\"trivy scan\", \"sonarqube analysis\"]}, {\"name\": \"deploy\", \"duration\": \"8m\", \"actions\": [\"kubectl apply\", \"health check\"]}], \"secrets_required\": [\"DOCKER_REGISTRY_TOKEN\", \"KUBECONFIG\", \"SONAR_TOKEN\"]}"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "analyze_infrastructure",
+        "description": "Analyzes infrastructure requirements for application deployment and provides recommendations for cloud resources, container orchestration, and scalability.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "application_type": {
+              "type": "string",
+              "enum": ["monolith", "microservices", "serverless", "static_site"],
+              "description": "Type of application architecture"
+            },
+            "service_count": {
+              "type": "integer",
+              "description": "Number of services or components"
+            },
+            "platform": {
+              "type": "string",
+              "enum": ["kubernetes", "ecs", "app_service", "lambda", "cloud_run"],
+              "description": "Target deployment platform"
+            },
+            "requirements": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "high_availability",
+                  "auto_scaling",
+                  "service_mesh",
+                  "monitoring",
+                  "logging"
+                ]
+              },
+              "description": "Required infrastructure features"
+            }
+          },
+          "required": ["application_type", "platform"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "generate_pipeline_config",
+        "description": "Generates CI/CD pipeline configuration for automated build, test, and deployment workflows.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "platform": {
+              "type": "string",
+              "enum": ["github_actions", "gitlab_ci", "jenkins", "azure_devops", "circleci"],
+              "description": "CI/CD platform to generate config for"
+            },
+            "stages": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["build", "test", "security_scan", "deploy", "rollback", "notify"]
+              },
+              "description": "Pipeline stages to include"
+            },
+            "target_environment": {
+              "type": "string",
+              "description": "Target deployment environment"
+            },
+            "services": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of services to deploy"
+            }
+          },
+          "required": ["platform", "stages", "target_environment"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "execute_deployment",
+        "description": "Executes deployment to target environment with health checks and rollback capabilities.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "environment": {
+              "type": "string",
+              "enum": ["dev", "staging", "production"],
+              "description": "Target environment"
+            },
+            "services": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Services to deploy"
+            },
+            "strategy": {
+              "type": "string",
+              "enum": ["rolling", "blue_green", "canary"],
+              "description": "Deployment strategy"
+            },
+            "health_check_endpoint": {
+              "type": "string",
+              "description": "Health check URL to verify deployment"
+            }
+          },
+          "required": ["environment", "services", "strategy"]
+        }
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "temperature": 0.4,
+  "max_tokens": 3000,
+  "stream": false,
+  "parallel_tool_calls": true
+}

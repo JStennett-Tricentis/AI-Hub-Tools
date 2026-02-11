@@ -1,0 +1,217 @@
+{
+  "description": "Database migration workflow with schema analysis, data transformation, and validation",
+  "model": "{{GENERIC_MODEL_ID}}",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a database migration expert that helps migrate data between different database systems, transform schemas, and ensure data integrity."
+    },
+    {
+      "role": "user",
+      "content": "I need to migrate a PostgreSQL database to MongoDB. The main table is 'customers' with 50,000 records. What's the best approach?"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_schema_001",
+          "type": "function",
+          "function": {
+            "name": "analyze_schema",
+            "arguments": "{\"source_database\": \"postgresql\", \"target_database\": \"mongodb\", \"table_name\": \"customers\", \"analyze_relationships\": true, \"analyze_indexes\": true}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_schema_001",
+      "content": "{\"schema_analysis\": {\"columns\": 15, \"relationships\": [{\"type\": \"one_to_many\", \"table\": \"orders\", \"foreign_key\": \"customer_id\"}], \"indexes\": [\"email_idx\", \"created_at_idx\"], \"data_types\": {\"uuid\": 1, \"varchar\": 8, \"timestamp\": 3, \"integer\": 2, \"boolean\": 1}}, \"migration_complexity\": \"medium\", \"recommended_approach\": \"embed_related_data\"}"
+    },
+    {
+      "role": "assistant",
+      "content": "The analysis shows a medium complexity migration. I recommend embedding related order data. Let me generate the migration script."
+    },
+    {
+      "role": "user",
+      "content": "Please generate the migration script and include data validation steps."
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_migration_001",
+          "type": "function",
+          "function": {
+            "name": "generate_migration_script",
+            "arguments": "{\"source_db\": \"postgresql\", \"target_db\": \"mongodb\", \"source_table\": \"customers\", \"target_collection\": \"customers\", \"transformation_rules\": [{\"field\": \"id\", \"transform\": \"uuid_to_objectid\"}, {\"field\": \"orders\", \"transform\": \"embed_related\"}], \"batch_size\": 1000}"
+          }
+        },
+        {
+          "id": "call_validation_001",
+          "type": "function",
+          "function": {
+            "name": "create_validation_plan",
+            "arguments": "{\"validation_checks\": [\"record_count\", \"data_integrity\", \"foreign_key_consistency\", \"null_value_handling\"], \"sample_size\": 1000}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_migration_001",
+      "content": "{\"script_generated\": true, \"script_type\": \"python\", \"estimated_duration\": \"15 minutes\", \"batches\": 50, \"features\": [\"progress_tracking\", \"error_handling\", \"rollback_support\", \"logging\"], \"dependencies\": [\"psycopg2\", \"pymongo\"]}"
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_validation_001",
+      "content": "{\"validation_steps\": [{\"step\": \"record_count_comparison\", \"description\": \"Compare total record counts between source and target\"}, {\"step\": \"data_integrity_check\", \"description\": \"Validate data types and constraints\"}, {\"step\": \"sample_data_verification\", \"description\": \"Compare 1000 random records field by field\"}], \"estimated_validation_time\": \"5 minutes\"}"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "analyze_schema",
+        "description": "Analyzes source database schema and provides recommendations for target schema design.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "source_database": {
+              "type": "string",
+              "enum": ["postgresql", "mysql", "oracle", "sqlserver", "mongodb"],
+              "description": "Source database type"
+            },
+            "target_database": {
+              "type": "string",
+              "enum": ["postgresql", "mysql", "mongodb", "dynamodb", "cosmosdb"],
+              "description": "Target database type"
+            },
+            "table_name": {
+              "type": "string",
+              "description": "Table or collection to analyze"
+            },
+            "analyze_relationships": {
+              "type": "boolean",
+              "description": "Whether to analyze foreign key relationships"
+            },
+            "analyze_indexes": {
+              "type": "boolean",
+              "description": "Whether to analyze indexes"
+            }
+          },
+          "required": ["source_database", "target_database", "table_name"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "generate_migration_script",
+        "description": "Generates a migration script to transfer data from source to target database.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "source_db": {
+              "type": "string",
+              "description": "Source database type"
+            },
+            "target_db": {
+              "type": "string",
+              "description": "Target database type"
+            },
+            "source_table": {
+              "type": "string",
+              "description": "Source table name"
+            },
+            "target_collection": {
+              "type": "string",
+              "description": "Target collection/table name"
+            },
+            "transformation_rules": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "field": {
+                    "type": "string"
+                  },
+                  "transform": {
+                    "type": "string"
+                  }
+                }
+              },
+              "description": "Data transformation rules to apply"
+            },
+            "batch_size": {
+              "type": "integer",
+              "description": "Number of records to process per batch"
+            }
+          },
+          "required": ["source_db", "target_db", "source_table", "target_collection"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "create_validation_plan",
+        "description": "Creates a comprehensive validation plan to verify migration success.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "validation_checks": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "record_count",
+                  "data_integrity",
+                  "foreign_key_consistency",
+                  "null_value_handling",
+                  "data_type_accuracy"
+                ]
+              },
+              "description": "Validation checks to perform"
+            },
+            "sample_size": {
+              "type": "integer",
+              "description": "Number of records to sample for detailed validation"
+            }
+          },
+          "required": ["validation_checks"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "execute_migration",
+        "description": "Executes the migration with progress tracking and error handling.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "script_path": {
+              "type": "string",
+              "description": "Path to migration script"
+            },
+            "dry_run": {
+              "type": "boolean",
+              "description": "Whether to perform a dry run without actually migrating data"
+            },
+            "parallel_workers": {
+              "type": "integer",
+              "description": "Number of parallel workers for migration"
+            }
+          },
+          "required": ["script_path"]
+        }
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "temperature": 0.4,
+  "max_tokens": 4096,
+  "stream": false,
+  "parallel_tool_calls": true
+}

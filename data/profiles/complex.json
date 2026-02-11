@@ -1,0 +1,17 @@
+{
+  "name": "complex",
+  "description": "Complex request with tools, parallel tool calls, and multiple turns - tests advanced features",
+  "defaults": {
+    "turns": 6,
+    "includeTools": true,
+    "toolCount": 3,
+    "includeSystemPrompt": true,
+    "temperature": 0.7,
+    "maxTokens": 3000,
+    "parallelToolCalls": true
+  },
+  "examples": [
+    "dotnet run -- -p complex -m gpt-4o-2024-08-06",
+    "dotnet run -- -p complex -t 5 -n 8"
+  ]
+}

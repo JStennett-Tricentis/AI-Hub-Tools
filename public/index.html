@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Hub Tools</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-title">
+        <h1>AI Hub Tools</h1>
+        <span class="badge">Request Generator</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-sm btn-secondary" id="btnReset" title="Reset form">Reset</button>
+      </div>
+    </header>
+
+    <div class="main">
+      <!-- Left Panel: Configuration -->
+      <div class="panel-left">
+
+        <!-- Generation Mode Selector -->
+        <div class="mode-tabs" id="modeTabs">
+          <button class="mode-tab" data-mode="template">
+            <span class="mode-tab-label">Template</span>
+            <span class="mode-tab-hint">Static / Reproducible</span>
+          </button>
+          <button class="mode-tab" data-mode="profile">
+            <span class="mode-tab-label">Profile</span>
+            <span class="mode-tab-hint">Presets + Variation</span>
+          </button>
+          <button class="mode-tab active" data-mode="custom">
+            <span class="mode-tab-label">Custom</span>
+            <span class="mode-tab-hint">Full Control</span>
+          </button>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="form-section" id="sectionQuickStart">
+          <div class="form-section-header" data-toggle-section>
+            <span>Quick Start</span>
+            <span class="chevron">&#9660;</span>
+          </div>
+          <div class="form-section-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Profile</label>
+                <select id="selProfile">
+                  <option value="">-- None --</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Template</label>
+                <select id="selTemplate">
+                  <option value="">-- None --</option>
+                </select>
+              </div>
+            </div>
+            <label id="presetLabel" style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:6px;display:block;">Example Presets</label>
+            <div class="preset-grid">
+              <button class="preset-btn" data-preset="multi-turn-analysis">Multi-turn Code Analysis</button>
+              <button class="preset-btn" data-preset="nested-tool-params">Deeply Nested Tool Params</button>
+              <button class="preset-btn" data-preset="large-history">Large Conversation History</button>
+              <button class="preset-btn" data-preset="streaming-tools">Streaming with Tool Calls</button>
+              <button class="preset-btn" data-preset="batch-embeddings">Batch Embeddings</button>
+              <button class="preset-btn" data-preset="multilingual-embeddings">Multilingual Embeddings</button>
+              <button class="preset-btn" data-preset="document-clustering">Document Clustering</button>
+              <button class="preset-btn" data-preset="edge-cases">Edge Cases &amp; Stress</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Endpoint Type -->
+        <div class="form-section" id="sectionEndpoint">
+          <div class="form-section-header" data-toggle-section>
+            <span>Endpoint Type</span>
+            <span class="chevron">&#9660;</span>
+          </div>
+          <div class="form-section-body">
+            <div class="tab-bar" id="endpointTabs">
+              <button class="tab-btn active" data-endpoint="chat">Chat Completions</button>
+              <button class="tab-btn" data-endpoint="completions">Legacy Completions</button>
+              <button class="tab-btn" data-endpoint="embeddings">Embeddings</button>
+              <button class="tab-btn" data-endpoint="invoke">Bedrock Invoke</button>
+              <button class="tab-btn" data-endpoint="invoke-stream">Bedrock Invoke Stream</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Model Selection -->
+        <div class="form-section" id="sectionModel">
+          <div class="form-section-header" data-toggle-section>
+            <span>Model Selection</span>
+            <span class="chevron">&#9660;</span>
+          </div>
+          <div class="form-section-body">
+            <div class="form-group">
+              <label>Model</label>
+              <select id="selModel"></select>
+            </div>
+            <div id="modelInfoDisplay" class="model-info hidden">
+              <div class="model-info-row">
+                <span class="label">Provider</span>
+                <span class="value" id="infoProvider">--</span>
+              </div>
+              <div class="model-info-row">
+                <span class="label">Context Window</span>
+                <span class="value" id="infoContext">--</span>
+              </div>
+              <div class="model-info-row">
+                <span class="label">Max Output</span>
+                <span class="value" id="infoMaxOutput">--</span>
+              </div>
+              <div class="tag-list" id="modelTags"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generation Settings -->
+        <div class="form-section" id="sectionGeneration">
+          <div class="form-section-header" data-toggle-section>
+            <span>Generation Settings</span>
+            <span class="chevron">&#9660;</span>
+          </div>
+          <div class="form-section-body">
+            <div class="form-group mb-2">
+              <label>Complexity</label>
+              <div class="segmented" id="complexityControl">
+                <button class="segmented-btn" data-complexity="simple">Simple</button>
+                <button class="segmented-btn active" data-complexity="medium">Medium</button>
+                <button class="segmented-btn" data-complexity="complex">Complex</button>
+                <button class="segmented-btn" data-complexity="stress">Stress</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Turns</label>
+                <input type="number" id="inputTurns" min="1" max="150" placeholder="auto">
+              </div>
+              <div class="form-group">
+                <label>Tools</label>
+                <input type="number" id="inputTools" min="0" max="10" placeholder="auto">
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label>Topic</label>
+              <input type="text" id="inputTopic" placeholder="e.g. database optimization, API design...">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Language</label>
+                <select id="selLanguage">
+                  <option value="">Auto (random)</option>
+                  <option>Python</option>
+                  <option>JavaScript</option>
+                  <option>TypeScript</option>
+                  <option>Java</option>
+                  <option>C#</option>
+                  <option>Go</option>
+                  <option>Rust</option>
+                  <option>Ruby</option>
+                  <option>PHP</option>
+                  <option>Swift</option>
+                  <option>Kotlin</option>
+                  <option>Scala</option>
+                  <option>Elixir</option>
+                  <option>SQL</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Domain</label>
+                <select id="selDomain">
+                  <option value="">Auto (random)</option>
+                  <option value="e-commerce platform">E-Commerce</option>
+                  <option value="financial services">Financial Services</option>
+                  <option value="healthcare system">Healthcare</option>
+                  <option value="logistics management">Logistics</option>
+                  <option value="social media platform">Social Media</option>
+                  <option value="IoT platform">IoT Platform</option>
+                  <option value="enterprise resource planning">ERP</option>
+                  <option value="customer relationship management">CRM</option>
+                </select>
+              </div>
+            </div>
+            <!-- Prompt for legacy completions -->
+            <div class="form-group hidden" id="promptGroup">
+              <label>Prompt (Legacy Completions)</label>
+              <textarea id="inputPrompt" rows="3" placeholder="Enter prompt text for legacy completions..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Model Parameters -->
+        <div class="form-section" id="sectionParams">
+          <div class="form-section-header" data-toggle-section>
+            <span>Model Parameters</span>
+            <span class="chevron">&#9660;</span>
+          </div>
+          <div class="form-section-body">
+            <div class="form-group mb-2">
+              <label>Temperature</label>
+              <div class="slider-group">
+                <input type="range" id="rangeTemp" min="0" max="2" step="0.1" value="0.7">
+                <span class="slider-value" id="tempValue">0.7</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Max Tokens</label>
+                <input type="number" id="inputMaxTokens" min="1" max="100000" placeholder="auto">
+              </div>
+            </div>
+            <div class="toggle-row">
+              <label>Stream</label>
+              <div class="toggle">
+                <input type="checkbox" id="toggleStream">
+                <span class="toggle-slider"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Embedding Options -->
+        <div class="form-section hidden" id="embeddingSection">
+          <div class="form-section-header" data-toggle-section>
+            <span>Embedding Options</span>
+            <span class="chevron">&#9660;</span>
+          </div>
+          <div class="form-section-body">
+            <div class="form-group mb-2">
+              <label>Input Texts (one per line or comma-separated)</label>
+              <textarea id="inputEmbeddingTexts" rows="4" placeholder="Enter texts for embedding..."></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Text Count</label>
+                <input type="number" id="inputTextCount" min="1" max="100" placeholder="auto">
+              </div>
+              <div class="form-group">
+                <label>Dimensions</label>
+                <input type="number" id="inputDimensions" min="1" placeholder="auto">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Encoding Format</label>
+              <div class="segmented" id="encodingControl">
+                <button class="segmented-btn active" data-encoding="float">Float</button>
+                <button class="segmented-btn" data-encoding="base64">Base64</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Special Modes -->
+        <div class="form-section collapsed" id="sectionSpecialModes">
+          <div class="form-section-header" data-toggle-section>
+            <span>Special Modes</span>
+            <span class="chevron">&#9660;</span>
+          </div>
+          <div class="form-section-body">
+            <div class="toggle-row">
+              <label>Tosca Compatible</label>
+              <div class="toggle">
+                <input type="checkbox" id="toggleTosca">
+                <span class="toggle-slider"></span>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <label>Tools Only</label>
+              <div class="toggle">
+                <input type="checkbox" id="toggleToolsOnly">
+                <span class="toggle-slider"></span>
+              </div>
+            </div>
+            <div class="form-row mt-2">
+              <div class="form-group">
+                <label>Screenshots</label>
+                <input type="number" id="inputScreenshots" min="0" max="20" placeholder="0">
+              </div>
+              <div class="form-group">
+                <label>Screenshot Size (KB)</label>
+                <input type="number" id="inputScreenshotSize" min="1" max="500" placeholder="50">
+              </div>
+            </div>
+            <div class="toggle-row">
+              <label>Images Only</label>
+              <div class="toggle">
+                <input type="checkbox" id="toggleImagesOnly">
+                <span class="toggle-slider"></span>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <label>Strict Mode</label>
+              <div class="toggle">
+                <input type="checkbox" id="toggleStrict">
+                <span class="toggle-slider"></span>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <label>Hub Format</label>
+              <div class="toggle">
+                <input type="checkbox" id="toggleHubFormat">
+                <span class="toggle-slider"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output Options -->
+        <div class="form-section collapsed" id="sectionOutputOptions">
+          <div class="form-section-header" data-toggle-section>
+            <span>Output Options</span>
+            <span class="chevron">&#9660;</span>
+          </div>
+          <div class="form-section-body">
+            <div class="toggle-row">
+              <label>Compact JSON</label>
+              <div class="toggle">
+                <input type="checkbox" id="toggleCompact">
+                <span class="toggle-slider"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Batch & Size Estimate -->
+        <div class="form-section collapsed" id="sectionBatch">
+          <div class="form-section-header" data-toggle-section>
+            <span>Batch Generation</span>
+            <span class="chevron">&#9660;</span>
+          </div>
+          <div class="form-section-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Count (number of requests)</label>
+                <input type="number" id="inputBatchCount" min="1" max="100" value="1" placeholder="1">
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Generate multiple requests in a batch. Results are collected into a JSON array.</div>
+          </div>
+        </div>
+
+        <!-- Generate button -->
+        <div class="generate-bar">
+          <div class="size-estimate" id="sizeEstimate">
+            Est. size: <span class="size-value" id="sizeEstimateValue">~5 KB</span>
+          </div>
+          <div class="progress-bar hidden" id="batchProgress"><div class="progress-fill" id="batchProgressFill"></div></div>
+          <button class="btn btn-primary btn-generate" id="btnGenerate">Generate Request</button>
+        </div>
+      </div>
+
+      <!-- Right Panel: Output -->
+      <div class="panel-right">
+        <div class="output-toolbar">
+          <div class="output-toolbar-left">
+            <span class="output-label">Output</span>
+            <span class="output-size" id="outputSize"></span>
+          </div>
+          <div class="output-toolbar-right">
+            <button class="btn-icon" id="btnCopy" title="Copy to clipboard">&#128203;</button>
+            <button class="btn-icon" id="btnDownload" title="Download as JSON">&#11015;</button>
+          </div>
+        </div>
+
+        <div class="batch-tabs hidden" id="batchTabs"></div>
+
+        <div class="output-content" id="outputContent">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-state-icon">{ }</div>
+            <div class="empty-state-text">No request generated yet</div>
+            <div class="empty-state-hint">Configure the options on the left and click Generate</div>
+          </div>
+          <div class="json-output hidden" id="jsonOutput"></div>
+        </div>
+
+        <div class="summary-panel hidden" id="summaryPanel">
+          <div class="summary-header">Generation Summary</div>
+          <div id="endpointPathDisplay" class="endpoint-path hidden"></div>
+          <div class="summary-body" id="summaryBody"></div>
+          <div class="summary-warnings" id="summaryWarnings"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="/js/app.js"></script>
+</body>
+</html>

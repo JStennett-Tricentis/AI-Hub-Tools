@@ -1,0 +1,19 @@
+{
+  "name": "security",
+  "description": "Security-focused profile for code analysis and vulnerability detection scenarios",
+  "defaults": {
+    "turns": 6,
+    "includeTools": true,
+    "toolCount": 3,
+    "includeSystemPrompt": true,
+    "topic": "security analysis",
+    "temperature": 0.3,
+    "maxTokens": 4096,
+    "parallelToolCalls": true
+  },
+  "recommendedTools": ["analyze_code_security", "generate_secure_code", "check_dependencies"],
+  "examples": [
+    "dotnet run -- -p security -m gpt-4o-2024-08-06",
+    "dotnet run -- -p security --language python -n 8"
+  ]
+}

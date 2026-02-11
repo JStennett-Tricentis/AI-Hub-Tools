@@ -1,0 +1,8 @@
+{
+  // Line length - disabled for tables and code blocks
+  "MD013": false,
+  // Inline HTML - allow for special chars
+  "MD033": false,
+  // Allow duplicate headings in different sections (e.g. "Generation Flow" under different builders)
+  "MD024": { "siblings_only": true }
+}

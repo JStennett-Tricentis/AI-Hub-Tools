@@ -1,0 +1,21 @@
+{
+  "name": "stress",
+  "description": "Stress testing profile with large conversation history and many tools - tests system limits",
+  "defaults": {
+    "turns": 20,
+    "includeTools": true,
+    "toolCount": 5,
+    "includeSystemPrompt": true,
+    "temperature": 0.7,
+    "maxTokens": 8000,
+    "parallelToolCalls": true
+  },
+  "examples": [
+    "dotnet run -- -p stress -m gpt-4o-2024-08-06",
+    "dotnet run -- -p stress -n 30 -t 8 --max-tokens 10000"
+  ],
+  "warnings": [
+    "This profile generates large requests that may take longer to process",
+    "Ensure your model supports the configured max_tokens limit"
+  ]
+}
