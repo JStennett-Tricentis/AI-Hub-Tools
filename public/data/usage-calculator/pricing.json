@@ -1,0 +1,97 @@
+{
+	"defaults": {
+		"markup": 1.5,
+		"creditPrice": 0.15,
+		"baseCredit": 0
+	},
+	"providerDefaults": {
+		"AzureOpenAI": {
+			"InputTokens": 0.0025,
+			"OutputTokens": 0.01,
+			"CacheReadInputTokens": 0.001
+		},
+		"Bedrock": {
+			"InputTokens": 0.005,
+			"OutputTokens": 0.025,
+			"CacheReadInputTokens": 0.0005,
+			"CacheCreationInputTokens": 0.00625
+		}
+	},
+	"modelOverrides": {
+		"gpt-4o": {
+			"input": 0.0025,
+			"output": 0.010,
+			"cacheRead": 0.001
+		},
+		"gpt-4.1": {
+			"input": 0.002,
+			"output": 0.008,
+			"cacheRead": null
+		},
+		"gpt-4.1-mini": {
+			"input": 0.0004,
+			"output": 0.0016,
+			"cacheRead": null
+		},
+		"gpt-5": {
+			"input": 0.00125,
+			"output": 0.010,
+			"cacheRead": null
+		},
+		"gpt-5-mini": {
+			"input": 0.00025,
+			"output": 0.002,
+			"cacheRead": null
+		},
+		"gpt-4o-mini": {
+			"input": 0.000150,
+			"output": 0.000600,
+			"cacheRead": 0.000075
+		},
+		"claude-sonnet-4.5": {
+			"input": 0.003,
+			"output": 0.015,
+			"cacheRead": 0.0005,
+			"cacheCreation": 0.00625
+		},
+		"claude-haiku-3": {
+			"input": 0.00025,
+			"output": 0.00125,
+			"cacheRead": 0.0005,
+			"cacheCreation": 0.00625
+		},
+		"claude-2": {
+			"input": 0.008,
+			"output": 0.024,
+			"cacheRead": 0.0005,
+			"cacheCreation": 0.00625
+		}
+	},
+	"metricFormulas": {
+		"ATA": {
+			"base": 0,
+			"multipliers": {
+				"TestSteps": 2.0,
+				"TestCases": 5.0
+			}
+		},
+		"ATC": {
+			"base": 0,
+			"multipliers": {
+				"TestSteps": 2.0,
+				"TestCases": 5.0
+			}
+		}
+	},
+	"modules": [
+		"Default",
+		"AI-HUB",
+		"ai-workspace",
+		"ATA",
+		"ATC"
+	],
+	"providerMapping": {
+		"Anthropic|AWS": "Bedrock",
+		"OpenAI|Azure": "AzureOpenAI"
+	}
+}

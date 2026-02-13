@@ -144,8 +144,39 @@
     },
   };
 
+  // ---- Top-level tool nav ----
+  let usageCalculatorInitialized = false;
+
+  function setupTopNav() {
+    const navBtns = document.querySelectorAll('#topNav .top-nav-btn');
+    navBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const toolName = btn.dataset.tool;
+
+        // Hide all tool panels
+        document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+
+        // Show selected
+        const panel = document.getElementById('tool-' + toolName);
+        if (panel) panel.classList.add('active');
+
+        // Lazy init Usage Calculator
+        if (toolName === 'usage-calculator' && !usageCalculatorInitialized) {
+          usageCalculatorInitialized = true;
+          if (window.UsageCalculator && typeof window.UsageCalculator.init === 'function') {
+            window.UsageCalculator.init();
+          }
+        }
+      });
+    });
+  }
+
   // ---- Init ----
   async function init() {
+    setupTopNav();
     setupEventListeners();
     await Promise.all([
       fetchModels(),

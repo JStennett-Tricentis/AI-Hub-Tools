@@ -325,6 +325,7 @@ html, body {
 /* ---- Tabs (endpoint type) ---- */
 .tab-bar {
   display: flex;
+  flex-wrap: wrap;
   gap: 2px;
   background: var(--bg-primary);
   border-radius: var(--radius);
@@ -332,7 +333,7 @@ html, body {
 }
 
 .tab-btn {
-  flex: 1;
+  flex: 0 0 auto;
   padding: 6px 8px;
   background: transparent;
   border: none;
@@ -932,6 +933,56 @@ html, body {
   border-radius: 2px;
   transition: width 0.3s ease;
   width: 0%;
+}
+
+/* ---- Top nav (tool switcher) ---- */
+.top-nav {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-primary);
+  border-radius: var(--radius);
+  padding: 2px;
+}
+
+.top-nav-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font-sans);
+  white-space: nowrap;
+}
+
+.top-nav-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.top-nav-btn.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* ---- Tool panels ---- */
+.tool-panel {
+  display: none;
+  flex: 1;
+  overflow: hidden;
+}
+
+.tool-panel.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Usage calculator panel needs scrolling */
+#tool-usage-calculator.active {
+  overflow-y: auto;
 }
 
 /* ---- Utility ---- */
