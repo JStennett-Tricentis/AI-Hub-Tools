@@ -1,0 +1,272 @@
+/* ---- Tabs (endpoint type) ---- */
+.tab-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-md);
+  padding: 2px;
+}
+
+.tab-bar .tab-btn {
+  flex: 0 0 auto;
+  padding: 6px 8px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab-bar .tab-btn:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-hover);
+}
+
+.tab-bar .tab-btn.active {
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+}
+
+/* ---- Segmented control ---- */
+.segmented {
+  display: flex;
+  gap: 2px;
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-md);
+  padding: 2px;
+}
+
+.segmented-btn {
+  flex: 1;
+  padding: 5px 8px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.segmented-btn:hover {
+  color: var(--color-text-primary);
+}
+
+.segmented-btn.active {
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+}
+
+/* ---- Generation mode tabs ---- */
+.mode-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.mode-tab {
+  flex: 1;
+  padding: 10px 12px;
+  background: var(--color-bg-tertiary);
+  border: none;
+  border-right: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+  font-family: var(--font-sans);
+}
+
+.mode-tab:last-child {
+  border-right: none;
+}
+
+.mode-tab:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.mode-tab.active {
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+}
+
+.mode-tab .mode-tab-label {
+  display: block;
+  font-weight: 600;
+}
+
+.mode-tab .mode-tab-hint {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.mode-tab.active .mode-tab-hint {
+  color: var(--color-accent);
+  opacity: 0.7;
+}
+
+/* ---- Usage calculator tab navigation ---- */
+.tab-navigation {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-2);
+}
+
+.tab-navigation .tab-btn {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  padding: var(--space-2) var(--space-6);
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.tab-navigation .tab-btn:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-secondary);
+}
+
+.tab-navigation .tab-btn.active {
+  color: var(--color-accent);
+  background: var(--color-bg-secondary);
+}
+
+.tab-navigation .tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-accent);
+}
+
+.tab-navigation .tab-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tab-btn-label {
+  font-weight: 600;
+}
+
+.tab-btn-hint {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+.tab-navigation .tab-btn.active .tab-btn-hint {
+  color: var(--color-accent);
+  opacity: 0.7;
+}
+
+/* Subtab navigation */
+.subtab-navigation {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-6);
+  background: var(--color-bg-secondary);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  width: fit-content;
+}
+
+.subtab-btn {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.subtab-btn:hover {
+  color: var(--color-text-primary);
+}
+
+.subtab-btn.active {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+/* Tab content */
+.tab-content-container {
+  flex: 1;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.subtab-content {
+  display: none;
+}
+
+.subtab-content.active {
+  display: block;
+}
+
+/* ---- Batch output tabs ---- */
+.batch-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 0 var(--space-4);
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+
+.batch-tab {
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-mono);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.batch-tab:hover {
+  color: var(--color-text-primary);
+}
+
+.batch-tab.active {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}

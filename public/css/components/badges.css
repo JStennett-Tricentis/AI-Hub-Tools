@@ -1,0 +1,68 @@
+/* ---- Badges / Tags ---- */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.tag-green { background: var(--color-status-success-bg); color: var(--color-status-success); }
+.tag-yellow { background: var(--color-status-warning-bg); color: var(--color-status-warning); }
+.tag-blue { background: var(--color-accent-bg); color: var(--color-accent); }
+.tag-red { background: var(--color-status-error-bg); color: var(--color-status-error); }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.badge-token { background: var(--color-accent-bg); color: var(--color-accent); }
+.badge-metric { background: var(--color-status-success-bg); color: var(--color-status-success); }
+.badge-ended { background: var(--color-status-warning-bg); color: var(--color-status-warning); }
+.badge-error { background: var(--color-status-error-bg); color: var(--color-status-error); }
+.tier-badge { display: inline-block; padding: 2px 8px; border-radius: var(--radius-full); font-size: var(--font-size-sm); font-weight: 500; }
+.tier-override { background: var(--color-accent-indigo-bg); color: var(--color-accent-indigo); }
+.tier-default { background: var(--color-bg-tertiary); color: var(--color-text-secondary); }
+
+/* Preset buttons */
+.preset-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.preset-btn {
+  padding: 7px 10px;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.preset-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-bg);
+}
+
+.preset-btn.active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-bg);
+}

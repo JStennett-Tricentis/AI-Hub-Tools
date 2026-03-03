@@ -1,0 +1,47 @@
+/* ---- Collapsible sections (usage calculator) ---- */
+.collapsible-section {
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.collapsible-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg-tertiary);
+  border: none;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.collapsible-header:hover {
+  background: var(--color-bg-elevated);
+}
+
+.collapsible-icon {
+  font-size: 1.25rem;
+  color: var(--color-text-secondary);
+  transition: transform var(--transition-fast);
+}
+
+.collapsible-section.open .collapsible-icon {
+  transform: rotate(45deg);
+}
+
+.collapsible-content {
+  display: none;
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+}
+
+.collapsible-section.open .collapsible-content {
+  display: block;
+}

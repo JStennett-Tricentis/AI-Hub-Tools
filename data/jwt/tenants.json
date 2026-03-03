@@ -1,0 +1,318 @@
+{
+  "environments": {
+    "dev": {
+      "keyFile": "keys/private-dev.pem",
+      "passphraseEnvVar": "JWT_DEV_PASSPHRASE"
+    },
+    "stg": {
+      "keyFile": "keys/private-stg.pem",
+      "passphraseEnvVar": "JWT_STG_PASSPHRASE"
+    },
+    "prod": {
+      "keyFile": "keys/private-prod.pem",
+      "passphraseEnvVar": "JWT_PROD_PASSPHRASE"
+    }
+  },
+  "defaults": {
+    "iss": "tosca-cloud",
+    "roles": "admin",
+    "uid": "USER_ID",
+    "expirySeconds": 157680000
+  },
+  "tenants": [
+    { "_comment": "===== TEST TENANTS - Dev =====" },
+
+    {
+      "name": "TAIS With AI Credits (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+wc@tricentis.com",
+      "aid": "tais-with-credits",
+      "l2cid": "6f82916f-c85b-4d20-8d8a-a02f12c44d8a"
+    },
+    {
+      "name": "TAIS Without AI Credits (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+woc@tricentis.com",
+      "aid": "tais-without-credits",
+      "l2cid": "d43f6c4b-657e-415f-ab6c-501dde65496a"
+    },
+    {
+      "name": "TAIS Without Licenses (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+nlnpt2@tricentis.com",
+      "aid": "tais-no-license-no-prior-trial-2",
+      "l2cid": "6f113342-e008-48b7-9611-ccd258627ac9"
+    },
+    {
+      "name": "TAIS BlockAI True (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+blocked@tricentis.com",
+      "aid": "tais-disabled-ai-flags",
+      "l2cid": "75ef738f-7fcb-4edc-912f-0fb838c60fe3"
+    },
+    {
+      "name": "TAIS Active AI Trial (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+ta@tricentis.com",
+      "aid": "tais-trial-active",
+      "l2cid": "07829ba7-7e0b-4956-a4a6-f7f93f124bfb"
+    },
+    {
+      "name": "TAIS Expired AI Trial (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+te@tricentis.com",
+      "aid": "tais-trial-expired",
+      "l2cid": "4fc02940-28c1-4ff3-8696-5261a53262a7"
+    },
+    {
+      "name": "TAIS Comm License (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+cla@tricentis.com",
+      "aid": "tais-commercial-license-active",
+      "l2cid": "66f92ac1-3265-488c-90e6-f36888b84f76"
+    },
+    {
+      "name": "TAIS Expired Comm License (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+ecl@tricentis.com",
+      "aid": "tais-expired-comm-license",
+      "l2cid": "81269666-d711-45d2-8aaa-d7ed4c626331"
+    },
+    {
+      "name": "TAIS Expired Licenses (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+els@tricentis.com",
+      "aid": "tais-expired-licenses",
+      "l2cid": "9db94409-8c39-4670-8d50-877159316ab4"
+    },
+
+    { "_comment": "===== TEST TENANTS - Stg =====" },
+
+    {
+      "name": "TAIS With AI Credits (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+wc@tricentis.com",
+      "aid": "tais-with-credits",
+      "l2cid": "39c612ef-465e-4e62-acf5-c6d1a2fccde7"
+    },
+    {
+      "name": "TAIS Without AI Credits (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+woc@tricentis.com",
+      "aid": "tais-without-credits",
+      "l2cid": "d65b4562-ff2e-4592-9427-f67ec7ba8e38"
+    },
+    {
+      "name": "TAIS Without Licenses (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+nlnpt2@tricentis.com",
+      "aid": "tais-no-license-no-prior-trial-2",
+      "l2cid": "4fb67454-38b7-422d-808a-57e45b85cf53"
+    },
+    {
+      "name": "TAIS BlockAI True (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+blocked@tricentis.com",
+      "aid": "tais-disabled-ai-flags",
+      "l2cid": "be1312cf-9135-416f-bc6b-a24a307876bd"
+    },
+    {
+      "name": "TAIS Active AI Trial (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+ta@tricentis.com",
+      "aid": "tais-trial-active",
+      "l2cid": "907bb246-018f-4231-bedf-ddcdd0647d68"
+    },
+    {
+      "name": "TAIS Expired AI Trial (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+te@tricentis.com",
+      "aid": "tais-trial-expired",
+      "l2cid": "c2d67bfd-abb6-4a4b-aec6-ffcdd3a85f42"
+    },
+    {
+      "name": "TAIS Comm License (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+cla@tricentis.com",
+      "aid": "tais-commercial-license-active",
+      "l2cid": "7b31b2f5-54ed-4e8d-b21e-34a9756a8ec5"
+    },
+    {
+      "name": "TAIS Expired Comm License (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+ecl@tricentis.com",
+      "aid": "tais-expired-comm-license",
+      "l2cid": "8d58cc4f-b271-4987-8b07-ca4bd975ffd1"
+    },
+    {
+      "name": "TAIS Expired Licenses (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+els@tricentis.com",
+      "aid": "tais-expired-licenses",
+      "l2cid": "f2d02fd3-b732-4d94-8039-a7f1b05e51ce"
+    },
+
+    { "_comment": "===== AUTOMATED TEST TENANTS - Dev (Do Not Edit) =====" },
+
+    {
+      "name": "Auto: With AI Credits (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+15@tricentis.com",
+      "aid": "ai-hub-with-credits-demo",
+      "l2cid": "d05555e6-edcf-4ea2-ad3b-a9fa69ed62bf"
+    },
+    {
+      "name": "Auto: Without AI Credits (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+16@tricentis.com",
+      "aid": "ai-hub-without-credits-demo",
+      "l2cid": "92e3786a-5a28-4890-846d-5b6956171bf1"
+    },
+    {
+      "name": "Auto: Without Licenses (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+18@tricentis.com",
+      "aid": "ai-hub-with-no-licenses-demo",
+      "l2cid": "fe225cf0-33cf-4adc-97a6-7d2d9eae693e"
+    },
+    {
+      "name": "Auto: Without Licenses #2 (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+21@tricentis.com",
+      "aid": "ai-hub-with-no-licenses",
+      "l2cid": "d7bad3a5-a2db-4aaf-922f-f8c1c63949ee"
+    },
+    {
+      "name": "Auto: BlockAI True (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+20@tricentis.com",
+      "aid": "ai-hub-disabled-ai-flags-demo",
+      "l2cid": "6ef6d242-72a5-42bb-8e66-ad96280572f8"
+    },
+    {
+      "name": "Auto: Expired AI Trial (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+23@tricentis.com",
+      "aid": "ai-hub-expired-trial-demo",
+      "l2cid": "e9eff0e5-7ea4-4674-a82e-c54b027b99e5"
+    },
+    {
+      "name": "Auto: Comm License Only (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+24@tricentis.com",
+      "aid": "ai-hub-with-comm-licenses-only-demo",
+      "l2cid": "4c618116-1ff3-448b-882a-bbf20dcea8b3"
+    },
+    {
+      "name": "Auto: Expired Comm License (Dev)",
+      "environment": "dev",
+      "sub": "j.stennett+25@tricentis.com",
+      "aid": "ai-hub-expired-comm-license-demo",
+      "l2cid": "9ed439cf-1bd6-40e0-8115-21bbd27b54a4"
+    },
+
+    { "_comment": "===== AUTOMATED TEST TENANTS - Stg (Do Not Edit) =====" },
+
+    {
+      "name": "Auto: With AI Credits (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+15@tricentis.com",
+      "aid": "ai-hub-with-credits-demo",
+      "l2cid": "cd00a6d8-b23d-4c35-aab5-a8eefd49db82"
+    },
+    {
+      "name": "Auto: Without AI Credits (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+16@tricentis.com",
+      "aid": "ai-hub-without-credits-demo",
+      "l2cid": "b71123f4-8a8d-4f39-a3db-fe9b8b6da8ae"
+    },
+    {
+      "name": "Auto: Without Licenses (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+18@tricentis.com",
+      "aid": "ai-hub-with-no-licenses-demo",
+      "l2cid": "45d80ad3-f12a-433d-b2b9-1e78df092855"
+    },
+    {
+      "name": "Auto: BlockAI True (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+20@tricentis.com",
+      "aid": "ai-hub-disabled-ai-flags-demo",
+      "l2cid": "1653d3b7-ca02-43c9-a183-fd33f36e995c"
+    },
+    {
+      "name": "Auto: Expired AI Trial (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+23@tricentis.com",
+      "aid": "ai-hub-expired-trial-demo",
+      "l2cid": "f98558ed-f939-4506-8a08-892c3ebff641"
+    },
+    {
+      "name": "Auto: Comm License Only (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+24@tricentis.com",
+      "aid": "ai-hub-with-comm-licenses-only-demo",
+      "l2cid": "445df400-32ee-4da0-9ed2-532faa77a742"
+    },
+    {
+      "name": "Auto: Expired Comm License (Stg)",
+      "environment": "stg",
+      "sub": "j.stennett+25@tricentis.com",
+      "aid": "ai-hub-expired-comm-license-demo",
+      "l2cid": "ff214141-6dd9-46d4-a65f-0553d4d99c66"
+    },
+
+    { "_comment": "===== AUTOMATED TEST TENANTS - Prod (Do Not Edit) =====" },
+
+    {
+      "name": "Auto: With AI Credits (Prod)",
+      "environment": "prod",
+      "sub": "j.stennett+15@tricentis.com",
+      "aid": "ai-hub-with-credits-demo",
+      "l2cid": "36857b27-c5b3-42b0-aecb-81fc081d2ee8"
+    },
+    {
+      "name": "Auto: Without AI Credits (Prod)",
+      "environment": "prod",
+      "sub": "j.stennett+16@tricentis.com",
+      "aid": "ai-hub-without-credits-demo",
+      "l2cid": "80fa0ea3-d4fb-46d9-a32e-461de820aa3a"
+    },
+    {
+      "name": "Auto: Without Licenses (Prod)",
+      "environment": "prod",
+      "sub": "j.stennett+18@tricentis.com",
+      "aid": "ai-hub-with-no-licenses-demo",
+      "l2cid": "456e07b3-ef31-4402-ae1f-056e07f173b0"
+    },
+    {
+      "name": "Auto: BlockAI True (Prod)",
+      "environment": "prod",
+      "sub": "j.stennett+20@tricentis.com",
+      "aid": "ai-hub-disabled-ai-flags-demo",
+      "l2cid": "1830ff33-1206-4b26-851a-f978e5434406"
+    },
+    {
+      "name": "Auto: Expired AI Trial (Prod)",
+      "environment": "prod",
+      "sub": "j.stennett+23@tricentis.com",
+      "aid": "ai-hub-expired-trial-demo",
+      "l2cid": "61b6503d-7475-4791-949e-50a1d90e937b"
+    },
+    {
+      "name": "Auto: Comm License Only (Prod)",
+      "environment": "prod",
+      "sub": "j.stennett+24@tricentis.com",
+      "aid": "ai-hub-with-comm-licenses-only-demo",
+      "l2cid": "7fc6eeae-255d-4b3c-97c9-85a76e4a943d"
+    },
+    {
+      "name": "Auto: Expired Comm License (Prod)",
+      "environment": "prod",
+      "sub": "j.stennett+25@tricentis.com",
+      "aid": "ai-hub-expired-comm-license-demo",
+      "l2cid": "5547e18c-3c63-4787-b3bb-40326acdec4e"
+    }
+  ]
+}

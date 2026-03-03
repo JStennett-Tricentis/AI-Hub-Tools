@@ -1,0 +1,45 @@
+/* ============================================================
+   Two Panel Layout - Left config + Right output (Request Generator)
+   ============================================================ */
+
+.main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.panel-left {
+  width: var(--panel-left-width);
+  min-width: var(--panel-left-min-width);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+  flex-shrink: 0;
+}
+
+.panel-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-bg-primary);
+}
+
+@media (max-width: 900px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .panel-left {
+    width: 100%;
+    min-width: 0;
+    max-height: 50vh;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .panel-right {
+    min-height: 300px;
+  }
+}

@@ -1,0 +1,156 @@
+/* ---- Output panel ---- */
+.output-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px var(--space-4);
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.output-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.output-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.output-label {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.output-size {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.output-content {
+  flex: 1;
+  overflow: auto;
+  padding: var(--space-4);
+}
+
+.json-output {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  white-space: pre;
+  color: var(--color-text-primary);
+  tab-size: 2;
+}
+
+.json-output .json-key { color: #79c0ff; }
+.json-output .json-string { color: #a5d6ff; }
+.json-output .json-number { color: #79c0ff; }
+.json-output .json-boolean { color: #ff7b72; }
+.json-output .json-null { color: var(--color-text-muted); }
+.json-output .json-punctuation { color: var(--color-text-secondary); }
+
+/* Code output blocks (usage calculator) */
+.code-output {
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.code-output code {
+  color: var(--color-text-primary);
+}
+
+/* Usage calculator syntax highlighting */
+.syn-key { color: var(--color-accent-indigo); }
+.syn-string { color: var(--color-status-success); }
+.syn-number { color: var(--color-status-warning); }
+.syn-boolean { color: var(--color-accent); }
+.syn-null { color: var(--color-status-error); }
+.syn-bracket { color: var(--color-text-secondary); }
+.syn-comment { color: var(--color-text-muted); font-style: italic; }
+
+/* Code blocks */
+.code-block {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  background: var(--color-bg-tertiary);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+/* Event blocks (generator) */
+.event-block {
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.event-comment {
+  padding: 8px var(--space-4);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  font-style: italic;
+}
+
+.event-json {
+  margin: 0;
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.copy-event-btn {
+  display: block;
+  width: 100%;
+  padding: 6px;
+  background: var(--color-bg-tertiary);
+  border: none;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.copy-event-btn:hover {
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+.copy-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--color-text-secondary);
+}
+
+.copy-btn:hover {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+}

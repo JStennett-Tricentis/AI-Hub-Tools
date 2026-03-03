@@ -4,6 +4,7 @@ import path from "path";
 import { generateRoutes } from "./routes/generate.js";
 import { modelRoutes } from "./routes/models.js";
 import { profileRoutes } from "./routes/profiles.js";
+import { jwtRoutes } from "./routes/jwt.js";
 
 const app = express();
 const PORT = process.env.PORT ?? 3500;
@@ -18,6 +19,7 @@ app.use(express.static(path.join(process.cwd(), "public")));
 app.use("/api", generateRoutes);
 app.use("/api", modelRoutes);
 app.use("/api", profileRoutes);
+app.use("/api", jwtRoutes);
 
 // Health check
 app.get("/health", (_req, res) => {

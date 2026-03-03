@@ -424,6 +424,16 @@
       if (tokens.input === 0 && tokens.output === 0) { this.showError('Please enter at least some token values'); return; }
       const result = Pricing.calculate({ provider, region, model, tokens });
       this.displayTokenResults(result, tokens, provider, model);
+      this.updateStickyResult(result.credits);
+    },
+
+    updateStickyResult(credits) {
+      const stickyBar = document.getElementById('stickyResult');
+      const stickyValue = document.getElementById('stickyResultValue');
+      if (stickyBar && stickyValue) {
+        stickyValue.textContent = credits.toFixed(4);
+        stickyBar.classList.remove('hidden');
+      }
     },
 
     gatherTokenValues(provider) {
@@ -522,17 +532,34 @@
     setupCollapsibleSections() {
       const container = document.querySelector('.usage-calc');
       container.querySelectorAll('.collapsible-header').forEach(header => {
-        header.addEventListener('click', () => {
-          const section = header.parentElement;
-          const content = section.querySelector('.collapsible-content');
+        const section = header.parentElement;
+        const content = section.querySelector('.collapsible-content');
+        // ARIA setup
+        header.setAttribute('role', 'button');
+        header.setAttribute('tabindex', '0');
+        if (content) {
+          const contentId = content.id || ('collapsible-' + Math.random().toString(36).slice(2, 8));
+          content.id = contentId;
+          header.setAttribute('aria-controls', contentId);
+          header.setAttribute('aria-expanded', content.style.display === 'block' ? 'true' : 'false');
+        }
+
+        const toggle = () => {
           const icon = header.querySelector('.collapsible-icon');
           if (content.style.display === 'block') {
             content.style.display = 'none';
             icon.textContent = '+';
+            header.setAttribute('aria-expanded', 'false');
           } else {
             content.style.display = 'block';
             icon.textContent = '-';
+            header.setAttribute('aria-expanded', 'true');
           }
+        };
+
+        header.addEventListener('click', toggle);
+        header.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
         });
       });
     },

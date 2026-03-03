@@ -1,0 +1,476 @@
+/* ============================================================
+   JWT Manager Tool Styles
+   ============================================================ */
+
+/* ---- Layout ---- */
+.jwt-manager {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ---- Environment Bar ---- */
+.jwt-env-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.jwt-env-buttons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.jwt-env-btn {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.jwt-env-btn:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.jwt-env-btn.active {
+  background: var(--color-accent-bg);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.jwt-passphrase-status {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.jwt-passphrase-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-status-error);
+}
+
+.jwt-passphrase-dot.cached {
+  background: var(--color-status-success);
+}
+
+/* ---- Tab Navigation ---- */
+.jwt-tabs {
+  margin-bottom: var(--space-2);
+}
+
+/* ---- Tab Content ---- */
+.jwt-tab-content {
+  display: none;
+}
+
+.jwt-tab-content.active {
+  display: block;
+}
+
+/* ---- Bulk Panel ---- */
+.jwt-bulk-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.jwt-bulk-results {
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.jwt-bulk-results .data-table {
+  margin: 0;
+}
+
+.jwt-bulk-results .data-table td {
+  vertical-align: middle;
+}
+
+.jwt-bulk-status-ok {
+  color: var(--color-status-success);
+  font-weight: 500;
+}
+
+.jwt-bulk-status-error {
+  color: var(--color-status-error);
+  font-size: var(--font-size-sm);
+}
+
+.jwt-bulk-footer {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+}
+
+/* ---- Tenant Grid ---- */
+.jwt-tenant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ---- Tenant Card ---- */
+.jwt-tenant-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.jwt-tenant-card:hover {
+  border-color: var(--color-border-secondary);
+}
+
+.jwt-tenant-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-tertiary);
+}
+
+.jwt-tenant-name {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.jwt-tenant-card-body {
+  padding: var(--space-3) var(--space-4);
+}
+
+.jwt-tenant-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.jwt-tenant-meta-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.jwt-tenant-meta-label {
+  color: var(--color-text-muted);
+  min-width: 32px;
+}
+
+.jwt-tenant-meta-value {
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jwt-tenant-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* ---- Token Display ---- */
+.jwt-token-display {
+  margin-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+}
+
+.jwt-token-box {
+  position: relative;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  padding-right: var(--space-10);
+}
+
+.jwt-token-text {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  word-break: break-all;
+  line-height: 1.5;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.jwt-token-copy {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+}
+
+.jwt-token-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+/* ---- Expiry Badge ---- */
+.jwt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.jwt-badge-valid {
+  background: var(--color-status-success-bg);
+  color: var(--color-status-success);
+}
+
+.jwt-badge-expired {
+  background: var(--color-status-error-bg);
+  color: var(--color-status-error);
+}
+
+.jwt-badge-env {
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.jwt-badge-warning {
+  background: var(--color-status-warning-bg);
+  color: var(--color-status-warning);
+}
+
+/* ---- Decode Panel ---- */
+.jwt-decode {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 900px) {
+  .jwt-decode {
+    grid-template-columns: 1fr;
+  }
+}
+
+.jwt-decode-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.jwt-decode-input-wrapper {
+  position: relative;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-primary);
+  min-height: 200px;
+}
+
+.jwt-decode-textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: var(--space-3);
+  background: transparent;
+  border: none;
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: transparent;
+  caret-color: var(--color-text-primary);
+  outline: none;
+  position: relative;
+  z-index: 1;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.jwt-decode-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.jwt-part-header {
+  color: #f97583;
+}
+
+.jwt-part-dot {
+  color: var(--color-text-muted);
+}
+
+.jwt-part-payload {
+  color: #bc8cff;
+}
+
+.jwt-part-signature {
+  color: #79c0ff;
+}
+
+.jwt-decode-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.jwt-decode-section {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.jwt-decode-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-tertiary);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.jwt-decode-section-header.header-color {
+  color: #f97583;
+}
+
+.jwt-decode-section-header.payload-color {
+  color: #bc8cff;
+}
+
+.jwt-decode-section-header.signature-color {
+  color: #79c0ff;
+}
+
+.jwt-decode-section-body {
+  padding: var(--space-3);
+}
+
+.jwt-decode-section-body pre {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.jwt-decode-badges {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* ---- Passphrase Modal ---- */
+.jwt-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.jwt-modal {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: var(--shadow-xl);
+}
+
+.jwt-modal h3 {
+  margin: 0 0 var(--space-4) 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+}
+
+.jwt-modal .form-group {
+  margin-bottom: var(--space-4);
+}
+
+.jwt-modal-error {
+  color: var(--color-status-error);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-3);
+}
+
+.jwt-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+/* ---- Empty State ---- */
+.jwt-empty-state {
+  text-align: center;
+  padding: var(--space-12) var(--space-4);
+  color: var(--color-text-muted);
+}
+
+.jwt-empty-state-icon {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-3);
+  opacity: 0.5;
+}
+
+.jwt-empty-state-text {
+  font-size: var(--font-size-md);
+  margin-bottom: var(--space-2);
+}
+
+.jwt-empty-state-hint {
+  font-size: var(--font-size-sm);
+}

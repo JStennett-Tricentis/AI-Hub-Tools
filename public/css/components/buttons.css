@@ -1,0 +1,127 @@
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--color-bg-hover);
+  border-color: var(--color-text-muted);
+}
+
+.btn-warning {
+  background: var(--color-status-warning);
+  color: #0d1117;
+}
+
+.btn-warning:hover {
+  filter: brightness(1.1);
+}
+
+.btn-accent {
+  background: var(--color-accent-indigo);
+  color: #ffffff;
+}
+
+.btn-accent:hover {
+  background: var(--color-accent-indigo-hover);
+}
+
+.btn-sm {
+  padding: var(--space-1) 10px;
+  font-size: var(--font-size-sm);
+}
+
+.btn-icon {
+  padding: var(--space-2);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-text-muted);
+}
+
+/* Generate button */
+.btn-generate {
+  width: 100%;
+  padding: 10px;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+}
+
+.btn-generate:active:not(:disabled):not(.loading) {
+  transform: scale(0.98);
+}
+
+.btn-generate.loading {
+  position: relative;
+  color: transparent;
+}
+
+.btn-generate.loading::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.generate-bar {
+  padding: var(--space-3) var(--space-3);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-tertiary);
+}
+
+.button-group {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}

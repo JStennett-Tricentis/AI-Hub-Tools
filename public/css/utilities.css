@@ -1,0 +1,24 @@
+/* ============================================================
+   Utility Classes
+   ============================================================ */
+
+.hidden { display: none !important; }
+
+/* Margins */
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+
+/* Text */
+.text-success { color: var(--color-status-success); }
+.text-warning { color: var(--color-status-warning); }
+.text-error { color: var(--color-status-error); }
+.text-muted { color: var(--color-text-muted); }
+
+/* Spacing */
+.gap-sm { gap: var(--space-2); }
