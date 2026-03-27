@@ -214,11 +214,6 @@
   to { opacity: 1; }
 }
 
-/* Usage calculator panel needs scrolling */
-#tool-usage-calculator.active {
-  overflow-y: auto;
-}
-
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
   .sidebar {

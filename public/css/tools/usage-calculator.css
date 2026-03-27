@@ -2,51 +2,40 @@
    Usage Calculator - Tool-specific styles
    ============================================================ */
 
-/* Scoping wrapper */
+/* Scoping wrapper - pass-through for flex layout */
 .usage-calc {
   font-family: var(--font-sans);
   color: var(--color-text-primary);
   line-height: 1.6;
-}
-
-/* App container & layout */
-.usage-calc .app-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: var(--space-6);
+  flex: 1;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-.usage-calc .app-header {
-  text-align: center;
-  margin-bottom: var(--space-8);
-  padding: var(--space-6) 0;
+/* ---- Right Panel Content ---- */
+.uc-panel-right-content {
+  padding: var(--space-4);
+  overflow-y: auto;
+  height: 100%;
 }
 
-.usage-calc .app-title {
-  font-size: var(--font-size-3xl);
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-indigo));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: var(--space-2);
+/* ---- Left Panel Tab Content ---- */
+.uc-tab-left {
+  display: none;
 }
 
-.usage-calc .app-subtitle {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-xl);
-  font-weight: 300;
+.uc-tab-left.active {
+  display: block;
 }
 
-.usage-calc .app-footer {
-  margin-top: auto;
-  padding: var(--space-6) 0;
-  text-align: center;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-md);
-  border-top: 1px solid var(--color-border);
+/* ---- Left Panel Subtab Content ---- */
+.uc-subtab-left {
+  display: none;
+}
+
+.uc-subtab-left.active {
+  display: block;
 }
 
 /* ---- Timeline ---- */
@@ -140,8 +129,6 @@
 
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
-  .usage-calc .app-container { padding: var(--space-4); }
-  .usage-calc .app-title { font-size: 1.5rem; }
   .usage-calc .tab-navigation { flex-wrap: wrap; }
   .usage-calc .tab-navigation .tab-btn { flex: 1; min-width: 100px; text-align: center; font-size: var(--font-size-md); }
   .usage-calc .subtab-navigation { width: 100%; }

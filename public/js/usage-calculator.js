@@ -254,12 +254,19 @@
       const subtabBtns = container.querySelectorAll('.subtab-btn');
       subtabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-          subtabBtns.forEach(b => b.classList.remove('active'));
+          // Sync all subtab button active states (left + right panels)
+          subtabBtns.forEach(b => {
+            b.classList.toggle('active', b.dataset.subtab === btn.dataset.subtab);
+          });
           container.querySelectorAll('.subtab-content').forEach(c => c.classList.remove('active'));
-          btn.classList.add('active');
           const subtabId = btn.dataset.subtab + '-subtab';
           const subtabContent = document.getElementById(subtabId);
           if (subtabContent) subtabContent.classList.add('active');
+
+          // Also toggle left-panel paired subtab content
+          container.querySelectorAll('.uc-subtab-left').forEach(c => c.classList.remove('active'));
+          const leftContent = document.getElementById(subtabId + '-left');
+          if (leftContent) leftContent.classList.add('active');
         });
       });
     },
@@ -1353,6 +1360,11 @@
         const tabId = btn.dataset.tab + '-tab';
         const tabContent = document.getElementById(tabId);
         if (tabContent) tabContent.classList.add('active');
+
+        // Also toggle left-panel paired tab content
+        container.querySelectorAll('.uc-tab-left').forEach(c => c.classList.remove('active'));
+        const leftContent = document.getElementById(tabId + '-left');
+        if (leftContent) leftContent.classList.add('active');
       });
     });
   }
