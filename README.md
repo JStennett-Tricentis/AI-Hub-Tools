@@ -6,11 +6,12 @@ Generates realistic OpenAI-compatible JSON request payloads for testing AI Hub s
 
 ```bash
 npm install
-npm run dev                         # Generate a default medium-complexity request
-npm run dev -- -x simple            # Simple single-turn request
-npm run dev -- -x complex --tools 3 # Complex request with 3 tools
-npm run dev -- --embeddings         # Embedding request
+npm run dev:api                     # Start the web UI server on port 3500
 ```
+
+Open <http://localhost:3500> in your browser.
+
+> **Note:** `npm run dev` runs the CLI tool and prints JSON to the terminal — it does **not** start the web UI. Use `npm run dev:api` to launch the server.
 
 ## Web UI
 

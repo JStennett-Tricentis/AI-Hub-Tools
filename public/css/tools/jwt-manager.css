@@ -2,25 +2,14 @@
    JWT Manager Tool Styles
    ============================================================ */
 
-/* ---- Layout ---- */
-.jwt-manager {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-4);
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
 /* ---- Environment Bar ---- */
 .jwt-env-bar {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  padding: var(--space-3) 0;
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .jwt-env-buttons {
@@ -73,6 +62,93 @@
   background: var(--color-status-success);
 }
 
+/* ---- Product Bar ---- */
+.jwt-product-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.jwt-product-buttons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.jwt-product-btn {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.jwt-product-btn:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.jwt-product-btn.active {
+  background: var(--color-accent-bg);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ---- Profile Section ---- */
+.jwt-profile-section {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.jwt-profile-section label {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.jwt-profile-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.jwt-profile-row .form-select {
+  flex: 1;
+}
+
+/* ---- Profile Result Card ---- */
+.jwt-profile-result {
+  margin-bottom: var(--space-4);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.jwt-profile-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-accent-bg);
+  border-bottom: 1px solid var(--color-accent);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.jwt-profile-result-body {
+  padding: var(--space-3);
+}
+
 /* ---- Tab Navigation ---- */
 .jwt-tabs {
   margin-bottom: var(--space-2);
@@ -92,7 +168,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  margin-bottom: var(--space-4);
+  margin-top: var(--space-2);
 }
 
 .jwt-bulk-results {
@@ -128,11 +204,85 @@
   background: var(--color-bg-secondary);
 }
 
+/* ---- Right Panel Content ---- */
+.jwt-panel-right-content {
+  padding: var(--space-4);
+  overflow-y: auto;
+  height: 100%;
+}
+
 /* ---- Tenant Grid ---- */
 .jwt-tenant-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: var(--space-4);
+}
+
+/* ---- Tenant Section Divider ---- */
+.jwt-tenant-section-divider {
+  grid-column: 1 / -1;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: var(--space-2) 0 var(--space-1);
+  border-bottom: 1px solid var(--color-border);
+  margin-top: var(--space-2);
+}
+
+/* ---- Ad-hoc Card ---- */
+.jwt-adhoc-card {
+  grid-column: 1 / -1;
+  background: var(--color-bg-secondary);
+  border: 1px dashed var(--color-border-secondary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-2);
+}
+
+.jwt-adhoc-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-tertiary);
+}
+
+.jwt-adhoc-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.jwt-adhoc-hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.jwt-adhoc-form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  flex-wrap: wrap;
+}
+
+.jwt-adhoc-input {
+  flex: 1;
+  min-width: 130px;
+}
+
+.jwt-adhoc-input-wide {
+  flex: 2;
+  min-width: 200px;
+}
+
+.jwt-adhoc-card .jwt-token-display {
+  margin: 0 var(--space-4) var(--space-3);
+  border-top: none;
+  padding-top: 0;
 }
 
 /* ---- Tenant Card ---- */
@@ -243,52 +393,7 @@
   margin-top: var(--space-2);
 }
 
-/* ---- Expiry Badge ---- */
-.jwt-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: 500;
-}
-
-.jwt-badge-valid {
-  background: var(--color-status-success-bg);
-  color: var(--color-status-success);
-}
-
-.jwt-badge-expired {
-  background: var(--color-status-error-bg);
-  color: var(--color-status-error);
-}
-
-.jwt-badge-env {
-  background: var(--color-accent-bg);
-  color: var(--color-accent);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.jwt-badge-warning {
-  background: var(--color-status-warning-bg);
-  color: var(--color-status-warning);
-}
-
 /* ---- Decode Panel ---- */
-.jwt-decode {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
-}
-
-@media (max-width: 900px) {
-  .jwt-decode {
-    grid-template-columns: 1fr;
-  }
-}
-
 .jwt-decode-input-section {
   display: flex;
   flex-direction: column;
@@ -410,6 +515,120 @@
   flex-wrap: wrap;
 }
 
+/* ---- Manage Tab ---- */
+.jwt-manage-section {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.jwt-manage-section:last-child {
+  border-bottom: none;
+}
+
+.jwt-manage-section-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.jwt-manage-section .form-group {
+  margin-bottom: var(--space-2);
+}
+
+.jwt-manage-list-section {
+  margin-bottom: var(--space-5);
+}
+
+.jwt-manage-list-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.jwt-manage-env-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-accent);
+  background: var(--color-accent-bg);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  padding: 1px var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.jwt-manage-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.jwt-manage-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  gap: var(--space-3);
+}
+
+.jwt-manage-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.jwt-manage-item-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jwt-manage-item-meta {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jwt-manage-remove-btn {
+  flex-shrink: 0;
+  border: 1px solid var(--color-status-error);
+  color: var(--color-status-error);
+  background: transparent;
+  font-size: var(--font-size-xs);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.jwt-manage-remove-btn:hover {
+  background: var(--color-status-error);
+  color: #fff;
+}
+
+.jwt-manage-empty {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  padding: var(--space-2);
+}
+
 /* ---- Passphrase Modal ---- */
 .jwt-modal-backdrop {
   position: fixed;
@@ -451,26 +670,4 @@
   display: flex;
   justify-content: flex-end;
   gap: var(--space-2);
-}
-
-/* ---- Empty State ---- */
-.jwt-empty-state {
-  text-align: center;
-  padding: var(--space-12) var(--space-4);
-  color: var(--color-text-muted);
-}
-
-.jwt-empty-state-icon {
-  font-size: var(--font-size-3xl);
-  margin-bottom: var(--space-3);
-  opacity: 0.5;
-}
-
-.jwt-empty-state-text {
-  font-size: var(--font-size-md);
-  margin-bottom: var(--space-2);
-}
-
-.jwt-empty-state-hint {
-  font-size: var(--font-size-sm);
 }

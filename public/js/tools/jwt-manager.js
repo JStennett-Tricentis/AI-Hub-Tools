@@ -11,21 +11,21 @@
   // Helper: build an empty-state DOM node safely
   function buildEmptyState(iconChar, text, hint) {
     const wrapper = document.createElement('div');
-    wrapper.className = 'jwt-empty-state';
+    wrapper.className = 'empty-state';
 
     const icon = document.createElement('div');
-    icon.className = 'jwt-empty-state-icon';
+    icon.className = 'empty-state-icon';
     icon.textContent = iconChar;
     wrapper.appendChild(icon);
 
     const msg = document.createElement('div');
-    msg.className = 'jwt-empty-state-text';
+    msg.className = 'empty-state-text';
     msg.textContent = text;
     wrapper.appendChild(msg);
 
     if (hint) {
       const h = document.createElement('div');
-      h.className = 'jwt-empty-state-hint';
+      h.className = 'empty-state-hint';
       h.textContent = hint;
       wrapper.appendChild(h);
     }
@@ -44,17 +44,24 @@
       this.state = {
         environments: [],
         selectedEnv: '',
+        products: {},
+        selectedProduct: '',
+        profiles: {},
+        profileToken: null,
         tenants: [],
         passphraseStatus: {},
         tokens: new Map(),      // tenantIndex -> { token, payload }
         bulkResults: null,
         activeTab: 'tokens',
         decodeResult: null,
+        manageAddEnv: '',
       };
 
       this.dom = {};
       this._pendingAction = null;
       this._decodeTimer = null;
+      this._manageError = null;
+      this._adHoc = { sub: '', aid: '', l2cid: '', token: null, payload: null };
     }
 
     init() {
@@ -62,6 +69,8 @@
       this.cacheDom();
       this.setupEventListeners();
       this.fetchEnvironments();
+      this.fetchProducts();
+      this.fetchProfiles();
     }
 
     onActivate() {
@@ -72,13 +81,19 @@
       this.state.tokens.clear();
       this.state.bulkResults = null;
       this.state.decodeResult = null;
+      this.state.profileToken = null;
 
       if (this.dom.bulkResults) this.dom.bulkResults.classList.add('hidden');
       if (this.dom.bulkResultsBody) this.dom.bulkResultsBody.textContent = '';
       if (this.dom.decodeInput) this.dom.decodeInput.value = '';
       if (this.dom.decodeOverlay) this.dom.decodeOverlay.textContent = '';
       if (this.dom.decodeBadges) this.dom.decodeBadges.textContent = '';
+      if (this.dom.profileResult) {
+        this.dom.profileResult.classList.add('hidden');
+        this.dom.profileResult.textContent = '';
+      }
 
+      this._adHoc = { sub: '', aid: '', l2cid: '', token: null, payload: null };
       this.renderDecodeEmpty();
       this.renderTenantGrid();
     }
@@ -87,16 +102,22 @@
       const $ = (sel) => this.$(sel);
       this.dom = {
         envButtons: $('#jwtEnvButtons'),
+        productButtons: $('#jwtProductButtons'),
         passphraseDot: $('#jwtPassphraseDot'),
         passphraseLabel: $('#jwtPassphraseLabel'),
         bulkGenerateBtn: $('#jwtBulkGenerate'),
         bulkResults: $('#jwtBulkResults'),
         bulkResultsBody: $('#jwtBulkResultsBody'),
         copyAllBulkBtn: $('#jwtCopyAllBulk'),
+        profileSelect: $('#jwtProfileSelect'),
+        profileGenerateBtn: $('#jwtProfileGenerate'),
+        profileResult: $('#jwtProfileResult'),
         tenantGrid: $('#jwtTenantGrid'),
         tenantsEmpty: $('#jwtTenantsEmpty'),
         tabTokens: $('#jwtTabTokens'),
+        tabTokensLeft: $('#jwtTabTokensLeft'),
         tabDecode: $('#jwtTabDecode'),
+        tabDecodeLeft: $('#jwtTabDecodeLeft'),
         decodeInput: $('#jwtDecodeInput'),
         decodeOverlay: $('#jwtDecodeOverlay'),
         decodeBadges: $('#jwtDecodeBadges'),
@@ -107,6 +128,31 @@
         modalInput: $('#jwtPassphraseInput'),
         modalSubmitBtn: $('#jwtModalSubmit'),
         modalCancelBtn: $('#jwtModalCancel'),
+        // Manage tab
+        tabManage: $('#jwtTabManage'),
+        tabManageLeft: $('#jwtTabManageLeft'),
+        addTenantEnvBtns: $('#jwtAddTenantEnvBtns'),
+        addTenantName: $('#jwtAddTenantName'),
+        addTenantSub: $('#jwtAddTenantSub'),
+        addTenantAid: $('#jwtAddTenantAid'),
+        addTenantL2cid: $('#jwtAddTenantL2cid'),
+        addTenantRoles: $('#jwtAddTenantRoles'),
+        addTenantBtn: $('#jwtAddTenantBtn'),
+        addProductName: $('#jwtAddProductName'),
+        addProductIss: $('#jwtAddProductIss'),
+        addProductBtn: $('#jwtAddProductBtn'),
+        addProfileKey: $('#jwtAddProfileKey'),
+        addProfileDesc: $('#jwtAddProfileDesc'),
+        addProfileSub: $('#jwtAddProfileSub'),
+        addProfileAid: $('#jwtAddProfileAid'),
+        addProfileUid: $('#jwtAddProfileUid'),
+        addProfileEmail: $('#jwtAddProfileEmail'),
+        addProfileRoles: $('#jwtAddProfileRoles'),
+        addProfileBtn: $('#jwtAddProfileBtn'),
+        manageTenantList: $('#jwtManageTenantList'),
+        manageTenantEnvLabel: $('#jwtManageTenantEnvLabel'),
+        manageProductList: $('#jwtManageProductList'),
+        manageProfileList: $('#jwtManageProfileList'),
       };
     }
 
@@ -131,6 +177,13 @@
       // Copy all bulk
       if (this.dom.copyAllBulkBtn) {
         this.dom.copyAllBulkBtn.addEventListener('click', () => this.copyAllBulk());
+      }
+
+      // Profile generate
+      if (this.dom.profileGenerateBtn) {
+        this.dom.profileGenerateBtn.addEventListener('click', () => {
+          this.withPassphrase(() => this.generateProfileToken());
+        });
       }
 
       // Decode input with debounce
@@ -172,15 +225,36 @@
           if (e.key === 'Enter') this.submitPassphrase();
         });
       }
+
+      // Manage: Add Tenant
+      if (this.dom.addTenantBtn) {
+        this.dom.addTenantBtn.addEventListener('click', () => this.addTenant());
+      }
+
+      // Manage: Add Product
+      if (this.dom.addProductBtn) {
+        this.dom.addProductBtn.addEventListener('click', () => this.addProduct());
+      }
+
+      // Manage: Add Profile
+      if (this.dom.addProfileBtn) {
+        this.dom.addProfileBtn.addEventListener('click', () => this.addProfile());
+      }
     }
 
     updateTabVisibility() {
-      if (this.dom.tabTokens) {
-        this.dom.tabTokens.classList.toggle('active', this.state.activeTab === 'tokens');
-      }
-      if (this.dom.tabDecode) {
-        this.dom.tabDecode.classList.toggle('active', this.state.activeTab === 'decode');
-      }
+      const isTokens = this.state.activeTab === 'tokens';
+      const isDecode = this.state.activeTab === 'decode';
+      const isManage = this.state.activeTab === 'manage';
+
+      if (this.dom.tabTokens) this.dom.tabTokens.classList.toggle('active', isTokens);
+      if (this.dom.tabTokensLeft) this.dom.tabTokensLeft.classList.toggle('active', isTokens);
+      if (this.dom.tabDecode) this.dom.tabDecode.classList.toggle('active', isDecode);
+      if (this.dom.tabDecodeLeft) this.dom.tabDecodeLeft.classList.toggle('active', isDecode);
+      if (this.dom.tabManage) this.dom.tabManage.classList.toggle('active', isManage);
+      if (this.dom.tabManageLeft) this.dom.tabManageLeft.classList.toggle('active', isManage);
+
+      if (isManage) this.renderManageTab();
     }
 
     // ---- API Calls ----
@@ -190,12 +264,38 @@
         const res = await fetch('/api/jwt/environments');
         const data = await res.json();
         this.state.environments = data.environments || [];
+        if (this.state.environments.length > 0 && !this.state.manageAddEnv) {
+          this.state.manageAddEnv = this.state.environments[0];
+        }
         this.renderEnvButtons();
         if (this.state.environments.length > 0) {
           this.selectEnv(this.state.environments[0]);
         }
       } catch (e) {
         console.error('Failed to fetch JWT environments:', e);
+      }
+    }
+
+    async fetchProducts() {
+      try {
+        const res = await fetch('/api/jwt/products');
+        const data = await res.json();
+        this.state.products = data.products || {};
+        this.state.selectedProduct = data.default || Object.keys(this.state.products)[0] || '';
+        this.renderProductButtons();
+      } catch (e) {
+        console.error('Failed to fetch JWT products:', e);
+      }
+    }
+
+    async fetchProfiles() {
+      try {
+        const res = await fetch('/api/jwt/profiles');
+        const data = await res.json();
+        this.state.profiles = data.profiles || {};
+        this.renderProfileDropdown();
+      } catch (e) {
+        console.error('Failed to fetch JWT profiles:', e);
       }
     }
 
@@ -226,11 +326,18 @@
 
     async selectEnv(env) {
       this.state.selectedEnv = env;
+      if (!this.state.manageAddEnv) this.state.manageAddEnv = env;
       this.renderEnvButtons();
       await Promise.all([
         this.fetchTenants(env),
         this.refreshPassphraseStatus(),
       ]);
+      if (this.state.activeTab === 'manage') this.renderManageTab();
+    }
+
+    selectProduct(product) {
+      this.state.selectedProduct = product;
+      this.renderProductButtons();
     }
 
     // ---- Passphrase Flow ----
@@ -317,7 +424,11 @@
         const res = await fetch('/api/jwt/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ environment: env, tenantIndex }),
+          body: JSON.stringify({
+            environment: env,
+            tenantIndex,
+            product: this.state.selectedProduct,
+          }),
         });
         const data = await res.json();
         if (!res.ok) {
@@ -341,7 +452,10 @@
         const res = await fetch('/api/jwt/bulk-generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ environment: env }),
+          body: JSON.stringify({
+            environment: env,
+            product: this.state.selectedProduct,
+          }),
         });
         const data = await res.json();
         if (!res.ok) {
@@ -365,6 +479,38 @@
         showToast('Network error: ' + e.message, 'error');
       } finally {
         if (btn) { btn.disabled = false; btn.textContent = 'Bulk Generate All'; }
+      }
+    }
+
+    async generateProfileToken() {
+      const env = this.state.selectedEnv;
+      const profile = this.dom.profileSelect?.value;
+      if (!profile) {
+        showToast('Select a profile first', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/jwt/generate-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            environment: env,
+            product: this.state.selectedProduct,
+            profile,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Profile generation failed', 'error');
+          return;
+        }
+
+        this.state.profileToken = { token: data.token, payload: data.payload, profile };
+        this.renderProfileResult();
+        showToast('Profile token generated');
+      } catch (e) {
+        showToast('Network error: ' + e.message, 'error');
       }
     }
 
@@ -451,6 +597,69 @@
       });
     }
 
+    renderProductButtons() {
+      if (!this.dom.productButtons) return;
+      this.dom.productButtons.textContent = '';
+
+      Object.keys(this.state.products).forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'jwt-product-btn' + (key === this.state.selectedProduct ? ' active' : '');
+        btn.textContent = key;
+        btn.addEventListener('click', () => this.selectProduct(key));
+        this.dom.productButtons.appendChild(btn);
+      });
+    }
+
+    renderProfileDropdown() {
+      if (!this.dom.profileSelect) return;
+      // Clear existing options except the placeholder
+      this.dom.profileSelect.textContent = '';
+
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = 'Select profile...';
+      this.dom.profileSelect.appendChild(placeholder);
+
+      Object.entries(this.state.profiles).forEach(([key, profile]) => {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = key + (profile.description ? ' \u2014 ' + profile.description : '');
+        this.dom.profileSelect.appendChild(opt);
+      });
+    }
+
+    renderProfileResult() {
+      if (!this.dom.profileResult || !this.state.profileToken) return;
+
+      this.dom.profileResult.classList.remove('hidden');
+      this.dom.profileResult.textContent = '';
+
+      const { token, payload, profile } = this.state.profileToken;
+
+      // Header
+      const header = document.createElement('div');
+      header.className = 'jwt-profile-result-header';
+
+      const title = document.createElement('span');
+      title.textContent = 'Profile: ' + profile;
+      header.appendChild(title);
+
+      const badges = document.createElement('span');
+      const issBadge = document.createElement('span');
+      issBadge.className = 'badge badge-metric';
+      issBadge.textContent = 'iss: ' + (payload.iss || '');
+      badges.appendChild(issBadge);
+      header.appendChild(badges);
+
+      this.dom.profileResult.appendChild(header);
+
+      // Body with token display
+      const body = document.createElement('div');
+      body.className = 'jwt-profile-result-body';
+      body.appendChild(this.createTokenDisplay({ token, payload }));
+      this.dom.profileResult.appendChild(body);
+    }
+
     updatePassphraseIndicator() {
       const env = this.state.selectedEnv;
       const cached = this.state.passphraseStatus[env];
@@ -469,16 +678,122 @@
       if (!this.dom.tenantGrid) return;
       this.dom.tenantGrid.textContent = '';
 
+      // Ad-hoc card always first (full width)
+      this.dom.tenantGrid.appendChild(this.createAdHocCard());
+
       if (this.state.tenants.length === 0) {
-        this.dom.tenantGrid.appendChild(
-          buildEmptyState('\u{1F511}', 'No tenants found for this environment')
-        );
+        const empty = document.createElement('div');
+        empty.className = 'jwt-tenant-section-divider';
+        empty.textContent = 'No tenants for this environment';
+        this.dom.tenantGrid.appendChild(empty);
         return;
       }
 
-      this.state.tenants.forEach((_, i) => {
-        this.dom.tenantGrid.appendChild(this.createTenantCard(i));
+      const autoIndices = [];
+      const manualIndices = [];
+      this.state.tenants.forEach((t, i) => {
+        if (t.name.startsWith('Auto:')) autoIndices.push(i);
+        else manualIndices.push(i);
       });
+
+      if (autoIndices.length > 0) {
+        this.dom.tenantGrid.appendChild(this.createSectionDivider('Automated'));
+        autoIndices.forEach(i => this.dom.tenantGrid.appendChild(this.createTenantCard(i)));
+      }
+
+      if (manualIndices.length > 0) {
+        this.dom.tenantGrid.appendChild(this.createSectionDivider('Manual'));
+        manualIndices.forEach(i => this.dom.tenantGrid.appendChild(this.createTenantCard(i)));
+      }
+    }
+
+    createSectionDivider(label) {
+      const div = document.createElement('div');
+      div.className = 'jwt-tenant-section-divider';
+      div.textContent = label;
+      return div;
+    }
+
+    createAdHocCard() {
+      const s = this._adHoc;
+      const card = document.createElement('div');
+      card.className = 'jwt-adhoc-card';
+
+      // Header
+      const header = document.createElement('div');
+      header.className = 'jwt-adhoc-header';
+      const title = document.createElement('span');
+      title.className = 'jwt-adhoc-title';
+      title.textContent = 'Ad-hoc';
+      const hint = document.createElement('span');
+      hint.className = 'jwt-adhoc-hint';
+      hint.textContent = 'Generate a one-off token without saving';
+      header.appendChild(title);
+      header.appendChild(hint);
+      card.appendChild(header);
+
+      // Form row
+      const form = document.createElement('div');
+      form.className = 'jwt-adhoc-form';
+
+      const mkInput = (placeholder, key, wide) => {
+        const inp = document.createElement('input');
+        inp.className = 'form-input jwt-adhoc-input' + (wide ? ' jwt-adhoc-input-wide' : '');
+        inp.placeholder = placeholder;
+        inp.value = s[key] || '';
+        inp.autocomplete = 'off';
+        inp.addEventListener('input', () => { s[key] = inp.value; });
+        return inp;
+      };
+
+      form.appendChild(mkInput('sub (email)', 'sub', false));
+      form.appendChild(mkInput('aid', 'aid', false));
+      form.appendChild(mkInput('l2cid', 'l2cid', true));
+
+      const genBtn = document.createElement('button');
+      genBtn.className = 'btn btn-primary btn-sm';
+      genBtn.textContent = 'Generate';
+      genBtn.addEventListener('click', () => {
+        this.withPassphrase(() => this.generateAdHocToken());
+      });
+      form.appendChild(genBtn);
+      card.appendChild(form);
+
+      // Token result
+      if (s.token) {
+        card.appendChild(this.createTokenDisplay({ token: s.token, payload: s.payload }));
+      }
+
+      return card;
+    }
+
+    async generateAdHocToken() {
+      const { sub, aid, l2cid } = this._adHoc;
+      if (!sub || !aid || !l2cid) {
+        showToast('sub, aid, and l2cid are required', 'error');
+        return;
+      }
+      const env = this.state.selectedEnv;
+      try {
+        const res = await fetch('/api/jwt/generate-adhoc', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ environment: env, sub, aid, l2cid, product: this.state.selectedProduct }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Ad-hoc generation failed', 'error');
+          return;
+        }
+        this._adHoc.token = data.token;
+        this._adHoc.payload = data.payload;
+        // Re-render just the ad-hoc card
+        const existing = this.dom.tenantGrid?.querySelector('.jwt-adhoc-card');
+        if (existing) existing.replaceWith(this.createAdHocCard());
+        showToast('Ad-hoc token generated');
+      } catch (e) {
+        showToast('Network error: ' + e.message, 'error');
+      }
     }
 
     createTenantCard(index) {
@@ -500,7 +815,7 @@
       header.appendChild(name);
 
       const badge = document.createElement('span');
-      badge.className = 'jwt-badge jwt-badge-env';
+      badge.className = 'badge badge-token';
       badge.textContent = tenant.environment;
       header.appendChild(badge);
 
@@ -604,7 +919,7 @@
           const now = Math.floor(Date.now() / 1000);
           const expired = exp < now;
           const badge = document.createElement('span');
-          badge.className = 'jwt-badge ' + (expired ? 'jwt-badge-expired' : 'jwt-badge-valid');
+          badge.className = 'badge ' + (expired ? 'badge-error' : 'badge-metric');
           badge.textContent = expired ? 'Expired' : 'Valid';
           footer.appendChild(badge);
         }
@@ -697,10 +1012,10 @@
         if (data.expiryStatus) {
           const badge = document.createElement('span');
           if (data.expiryStatus.expired) {
-            badge.className = 'jwt-badge jwt-badge-expired';
+            badge.className = 'badge badge-error';
             badge.textContent = 'Expired';
           } else {
-            badge.className = 'jwt-badge jwt-badge-valid';
+            badge.className = 'badge badge-metric';
             badge.textContent = 'Valid \u2014 ' + data.expiryStatus.remaining + ' remaining';
           }
           this.dom.decodeBadges.appendChild(badge);
@@ -708,7 +1023,7 @@
 
         // Signature note
         const sigBadge = document.createElement('span');
-        sigBadge.className = 'jwt-badge jwt-badge-warning';
+        sigBadge.className = 'badge badge-ended';
         sigBadge.textContent = 'Signature not verified';
         this.dom.decodeBadges.appendChild(sigBadge);
       }
@@ -753,6 +1068,340 @@
       section.appendChild(body);
 
       return section;
+    }
+
+    // ---- Manage Tab ----
+
+    selectManageAddEnv(env) {
+      this.state.manageAddEnv = env;
+      this.renderManageAddTenantEnvButtons();
+    }
+
+    renderManageAddTenantEnvButtons() {
+      if (!this.dom.addTenantEnvBtns) return;
+      this.dom.addTenantEnvBtns.textContent = '';
+      this.state.environments.forEach(env => {
+        const btn = document.createElement('button');
+        btn.className = 'jwt-env-btn' + (env === this.state.manageAddEnv ? ' active' : '');
+        btn.textContent = env;
+        btn.addEventListener('click', () => this.selectManageAddEnv(env));
+        this.dom.addTenantEnvBtns.appendChild(btn);
+      });
+    }
+
+    async addTenant() {
+      const name = this.dom.addTenantName?.value.trim();
+      const sub = this.dom.addTenantSub?.value.trim();
+      const aid = this.dom.addTenantAid?.value.trim();
+      const l2cid = this.dom.addTenantL2cid?.value.trim();
+      const roles = this.dom.addTenantRoles?.value.trim();
+      const environment = this.state.manageAddEnv;
+
+      if (!name || !sub || !aid || !l2cid || !environment) {
+        showToast('Name, environment, sub, aid, and l2cid are required', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/jwt/tenants', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, environment, sub, aid, l2cid, roles: roles || undefined }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Failed to add tenant', 'error');
+          return;
+        }
+        showToast('Tenant added: ' + name);
+        // Clear form
+        ['addTenantName', 'addTenantSub', 'addTenantAid', 'addTenantL2cid', 'addTenantRoles'].forEach(k => {
+          if (this.dom[k]) this.dom[k].value = '';
+        });
+        // Refresh tenant list if we're on the affected env
+        if (environment === this.state.selectedEnv) {
+          await this.fetchTenants(environment);
+        }
+        this.renderManageTab();
+      } catch (e) {
+        showToast('Network error: ' + e.message, 'error');
+      }
+    }
+
+    async removeTenant(name, environment) {
+      try {
+        const res = await fetch('/api/jwt/tenants', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, environment }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Failed to remove tenant', 'error');
+          return;
+        }
+        showToast('Tenant removed: ' + name);
+        if (environment === this.state.selectedEnv) {
+          await this.fetchTenants(environment);
+        }
+        this.renderManageTab();
+      } catch (e) {
+        showToast('Network error: ' + e.message, 'error');
+      }
+    }
+
+    async addProduct() {
+      const name = this.dom.addProductName?.value.trim();
+      const iss = this.dom.addProductIss?.value.trim();
+
+      if (!name) {
+        showToast('Product name is required', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/jwt/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, iss: iss || undefined }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Failed to add product', 'error');
+          return;
+        }
+        showToast('Product added: ' + name);
+        if (this.dom.addProductName) this.dom.addProductName.value = '';
+        if (this.dom.addProductIss) this.dom.addProductIss.value = '';
+        // Refresh products state and buttons
+        await this.fetchProducts();
+        this.renderManageTab();
+      } catch (e) {
+        showToast('Network error: ' + e.message, 'error');
+      }
+    }
+
+    async removeProduct(name) {
+      try {
+        const res = await fetch('/api/jwt/products/' + encodeURIComponent(name), {
+          method: 'DELETE',
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Failed to remove product', 'error');
+          return;
+        }
+        showToast('Product removed: ' + name);
+        await this.fetchProducts();
+        this.renderManageTab();
+      } catch (e) {
+        showToast('Network error: ' + e.message, 'error');
+      }
+    }
+
+    async addProfile() {
+      const name = this.dom.addProfileKey?.value.trim();
+      const description = this.dom.addProfileDesc?.value.trim();
+      const sub = this.dom.addProfileSub?.value.trim();
+      const aid = this.dom.addProfileAid?.value.trim();
+      const uid = this.dom.addProfileUid?.value.trim();
+      const email = this.dom.addProfileEmail?.value.trim();
+      const roles = this.dom.addProfileRoles?.value.trim();
+
+      if (!name || !sub || !aid) {
+        showToast('Key, sub, and aid are required', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/jwt/profiles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name, description: description || undefined,
+            sub, aid,
+            uid: uid || undefined,
+            email: email || undefined,
+            roles: roles || undefined,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Failed to add profile', 'error');
+          return;
+        }
+        showToast('Profile added: ' + name);
+        ['addProfileKey', 'addProfileDesc', 'addProfileSub', 'addProfileAid',
+          'addProfileUid', 'addProfileEmail', 'addProfileRoles'].forEach(k => {
+          if (this.dom[k]) this.dom[k].value = '';
+        });
+        await this.fetchProfiles();
+        this.renderManageTab();
+      } catch (e) {
+        showToast('Network error: ' + e.message, 'error');
+      }
+    }
+
+    async removeProfile(name) {
+      try {
+        const res = await fetch('/api/jwt/profiles/' + encodeURIComponent(name), {
+          method: 'DELETE',
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.error || 'Failed to remove profile', 'error');
+          return;
+        }
+        showToast('Profile removed: ' + name);
+        await this.fetchProfiles();
+        this.renderManageTab();
+      } catch (e) {
+        showToast('Network error: ' + e.message, 'error');
+      }
+    }
+
+    renderManageTab() {
+      this.renderManageAddTenantEnvButtons();
+      this.renderManageTenantList();
+      this.renderManageProductList();
+      this.renderManageProfileList();
+    }
+
+    renderManageTenantList() {
+      if (!this.dom.manageTenantList) return;
+      this.dom.manageTenantList.textContent = '';
+
+      if (this.dom.manageTenantEnvLabel) {
+        this.dom.manageTenantEnvLabel.textContent = this.state.selectedEnv
+          ? this.state.selectedEnv.toUpperCase()
+          : '';
+      }
+
+      const tenants = this.state.tenants;
+      if (tenants.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'jwt-manage-empty';
+        empty.textContent = 'No tenants in this environment';
+        this.dom.manageTenantList.appendChild(empty);
+        return;
+      }
+
+      tenants.forEach(t => {
+        const item = document.createElement('div');
+        item.className = 'jwt-manage-list-item';
+
+        const info = document.createElement('div');
+        info.className = 'jwt-manage-item-info';
+
+        const label = document.createElement('span');
+        label.className = 'jwt-manage-item-label';
+        label.textContent = t.name;
+
+        const meta = document.createElement('span');
+        meta.className = 'jwt-manage-item-meta';
+        meta.textContent = t.aid;
+
+        info.appendChild(label);
+        info.appendChild(meta);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'btn btn-sm jwt-manage-remove-btn';
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => this.removeTenant(t.name, t.environment));
+
+        item.appendChild(info);
+        item.appendChild(removeBtn);
+        this.dom.manageTenantList.appendChild(item);
+      });
+    }
+
+    renderManageProductList() {
+      if (!this.dom.manageProductList) return;
+      this.dom.manageProductList.textContent = '';
+
+      const products = this.state.products;
+      const keys = Object.keys(products);
+
+      if (keys.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'jwt-manage-empty';
+        empty.textContent = 'No products configured';
+        this.dom.manageProductList.appendChild(empty);
+        return;
+      }
+
+      keys.forEach(key => {
+        const item = document.createElement('div');
+        item.className = 'jwt-manage-list-item';
+
+        const info = document.createElement('div');
+        info.className = 'jwt-manage-item-info';
+
+        const label = document.createElement('span');
+        label.className = 'jwt-manage-item-label';
+        label.textContent = key;
+
+        const meta = document.createElement('span');
+        meta.className = 'jwt-manage-item-meta';
+        meta.textContent = 'iss: ' + products[key].iss;
+
+        info.appendChild(label);
+        info.appendChild(meta);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'btn btn-sm jwt-manage-remove-btn';
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => this.removeProduct(key));
+
+        item.appendChild(info);
+        item.appendChild(removeBtn);
+        this.dom.manageProductList.appendChild(item);
+      });
+    }
+
+    renderManageProfileList() {
+      if (!this.dom.manageProfileList) return;
+      this.dom.manageProfileList.textContent = '';
+
+      const profiles = this.state.profiles;
+      const keys = Object.keys(profiles);
+
+      if (keys.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'jwt-manage-empty';
+        empty.textContent = 'No profiles configured';
+        this.dom.manageProfileList.appendChild(empty);
+        return;
+      }
+
+      keys.forEach(key => {
+        const profile = profiles[key];
+        const item = document.createElement('div');
+        item.className = 'jwt-manage-list-item';
+
+        const info = document.createElement('div');
+        info.className = 'jwt-manage-item-info';
+
+        const label = document.createElement('span');
+        label.className = 'jwt-manage-item-label';
+        label.textContent = key;
+
+        const meta = document.createElement('span');
+        meta.className = 'jwt-manage-item-meta';
+        meta.textContent = profile.description || profile.sub;
+
+        info.appendChild(label);
+        info.appendChild(meta);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'btn btn-sm jwt-manage-remove-btn';
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => this.removeProfile(key));
+
+        item.appendChild(info);
+        item.appendChild(removeBtn);
+        this.dom.manageProfileList.appendChild(item);
+      });
     }
   }
 
