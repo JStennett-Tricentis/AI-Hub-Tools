@@ -1,519 +1,611 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Hub Tools</title>
-  <link rel="stylesheet" href="/css/main.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AI Hub Tools</title>
+	<link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body>
-  <div class="app">
-    <!-- Header -->
-    <header class="header">
-      <div class="header-title">
-        <h1>AI Hub Tools</h1>
-      </div>
-      <div class="header-actions">
-        <button class="btn btn-sm btn-secondary" id="btnReset" title="Reset form">Reset</button>
-      </div>
-    </header>
+	<div class="app">
+		<!-- Header -->
+		<header class="header">
+			<div class="header-title">
+				<h1>AI Hub Tools</h1>
+			</div>
+			<div class="header-actions">
+				<button class="btn btn-sm btn-secondary" id="btnReset" title="Reset form">Reset</button>
+			</div>
+		</header>
 
-    <!-- App Body: Sidebar + Content -->
-    <div class="app-body">
-      <!-- Sidebar (rendered dynamically by AppShell) -->
-      <nav class="sidebar" role="tablist" aria-label="Tool navigation">
-        <div class="sidebar-nav"></div>
-        <div class="sidebar-toggle">
-          <button class="sidebar-toggle-btn" title="Toggle sidebar" aria-label="Toggle sidebar"></button>
-        </div>
-      </nav>
+		<!-- App Body: Sidebar + Content -->
+		<div class="app-body">
+			<!-- Sidebar (rendered dynamically by AppShell) -->
+			<nav class="sidebar" role="tablist" aria-label="Tool navigation">
+				<div class="sidebar-nav"></div>
+				<div class="sidebar-toggle">
+					<button class="sidebar-toggle-btn" title="Toggle sidebar" aria-label="Toggle sidebar"></button>
+				</div>
+			</nav>
 
-      <!-- Main Content Area -->
-      <div class="app-content">
+			<!-- Main Content Area -->
+			<div class="app-content">
 
-        <!-- Request Generator Tool -->
-        <div id="tool-request-generator" class="tool-panel" role="tabpanel">
-          <div class="main">
-            <!-- Left Panel: Configuration -->
-            <div class="panel-left">
+				<!-- Request Generator Tool -->
+				<div id="tool-request-generator" class="tool-panel" role="tabpanel">
+					<div class="main">
+						<!-- Left Panel: Configuration -->
+						<div class="panel-left">
 
-              <!-- Generation Mode Selector -->
-              <div class="mode-tabs" id="modeTabs">
-                <button class="mode-tab" data-mode="template">
-                  <span class="mode-tab-label">Template</span>
-                  <span class="mode-tab-hint">Static / Reproducible</span>
-                </button>
-                <button class="mode-tab" data-mode="profile">
-                  <span class="mode-tab-label">Profile</span>
-                  <span class="mode-tab-hint">Presets + Variation</span>
-                </button>
-                <button class="mode-tab active" data-mode="custom">
-                  <span class="mode-tab-label">Custom</span>
-                  <span class="mode-tab-hint">Full Control</span>
-                </button>
-              </div>
+							<!-- Generation Mode Selector -->
+							<div class="mode-tabs" id="modeTabs">
+								<button class="mode-tab" data-mode="template">
+									<span class="mode-tab-label">Template</span>
+									<span class="mode-tab-hint">Static / Reproducible</span>
+								</button>
+								<button class="mode-tab" data-mode="profile">
+									<span class="mode-tab-label">Profile</span>
+									<span class="mode-tab-hint">Presets + Variation</span>
+								</button>
+								<button class="mode-tab active" data-mode="custom">
+									<span class="mode-tab-label">Custom</span>
+									<span class="mode-tab-hint">Full Control</span>
+								</button>
+							</div>
 
-              <!-- Quick Start -->
-              <div class="form-section" id="sectionQuickStart">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Quick Start</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="selProfile">Profile</label>
-                      <select id="selProfile">
-                        <option value="">-- None --</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="selTemplate">Template</label>
-                      <select id="selTemplate">
-                        <option value="">-- None --</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group" id="presetGroup">
-                    <label for="selPreset">Example Presets</label>
-                    <select id="selPreset">
-                      <option value="">-- Select a preset --</option>
-                      <optgroup label="Chat Scenarios">
-                        <option value="multi-turn-analysis">Multi-turn Code Analysis</option>
-                        <option value="nested-tool-params">Deeply Nested Tool Params</option>
-                        <option value="large-history">Large Conversation History</option>
-                        <option value="streaming-tools">Streaming with Tool Calls</option>
-                        <option value="edge-cases">Edge Cases &amp; Stress</option>
-                      </optgroup>
-                      <optgroup label="Embedding Scenarios">
-                        <option value="batch-embeddings">Batch Embeddings</option>
-                        <option value="multilingual-embeddings">Multilingual Embeddings</option>
-                        <option value="document-clustering">Document Clustering</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                </div>
-              </div>
+							<!-- Quick Start -->
+							<div class="form-section" id="sectionQuickStart">
+								<div class="form-section-header" data-toggle-section>
+									<span>Quick Start</span>
+									<span class="chevron">&#9660;</span>
+								</div>
+								<div class="form-section-body">
+									<div class="form-row">
+										<div class="form-group">
+											<label for="selProfile">Profile</label>
+											<select id="selProfile">
+												<option value="">-- None --</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="selTemplate">Template</label>
+											<select id="selTemplate">
+												<option value="">-- None --</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group" id="presetGroup">
+										<label for="selPreset">Example Presets</label>
+										<select id="selPreset">
+											<option value="">-- Select a preset --</option>
+											<optgroup label="Chat Scenarios">
+												<option value="multi-turn-analysis">Multi-turn Code Analysis</option>
+												<option value="nested-tool-params">Deeply Nested Tool Params</option>
+												<option value="large-history">Large Conversation History</option>
+												<option value="streaming-tools">Streaming with Tool Calls</option>
+												<option value="edge-cases">Edge Cases &amp; Stress</option>
+											</optgroup>
+											<optgroup label="Embedding Scenarios">
+												<option value="batch-embeddings">Batch Embeddings</option>
+												<option value="multilingual-embeddings">Multilingual Embeddings</option>
+												<option value="document-clustering">Document Clustering</option>
+											</optgroup>
+										</select>
+									</div>
+								</div>
+							</div>
 
-              <!-- Endpoint Type -->
-              <div class="form-section" id="sectionEndpoint">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Endpoint Type</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="tab-bar" id="endpointTabs">
-                    <button class="tab-btn active" data-endpoint="chat">Chat Completions</button>
-                    <button class="tab-btn" data-endpoint="completions">Legacy Completions</button>
-                    <button class="tab-btn" data-endpoint="embeddings">Embeddings</button>
-                    <button class="tab-btn" data-endpoint="invoke">Bedrock Invoke</button>
-                    <button class="tab-btn" data-endpoint="invoke-stream">Bedrock Invoke Stream</button>
-                  </div>
-                </div>
-              </div>
+							<!-- Endpoint Type -->
+							<div class="form-section" id="sectionEndpoint">
+								<div class="form-section-header" data-toggle-section>
+									<span>Endpoint Type</span>
+									<span class="chevron">&#9660;</span>
+								</div>
+								<div class="form-section-body">
+									<div class="tab-bar" id="endpointTabs">
+										<button class="tab-btn active" data-endpoint="chat">Chat Completions</button>
+										<button class="tab-btn" data-endpoint="completions">Legacy Completions</button>
+										<button class="tab-btn" data-endpoint="embeddings">Embeddings</button>
+										<button class="tab-btn" data-endpoint="invoke">Bedrock Invoke</button>
+										<button class="tab-btn" data-endpoint="invoke-stream">Bedrock Invoke
+											Stream</button>
+									</div>
+								</div>
+							</div>
 
-              <!-- Model Selection -->
-              <div class="form-section" id="sectionModel">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Model Selection</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="form-group">
-                    <label for="selModel">Model</label>
-                    <select id="selModel"></select>
-                  </div>
-                  <div id="modelInfoDisplay" class="model-info hidden">
-                    <div class="model-info-row">
-                      <span class="label">Provider</span>
-                      <span class="value" id="infoProvider">--</span>
-                    </div>
-                    <div class="model-info-row">
-                      <span class="label">Context Window</span>
-                      <span class="value" id="infoContext">--</span>
-                    </div>
-                    <div class="model-info-row">
-                      <span class="label">Max Output</span>
-                      <span class="value" id="infoMaxOutput">--</span>
-                    </div>
-                    <div class="tag-list" id="modelTags"></div>
-                  </div>
-                </div>
-              </div>
+							<!-- Model Selection -->
+							<div class="form-section" id="sectionModel">
+								<div class="form-section-header" data-toggle-section>
+									<span>Model Selection</span>
+									<span class="chevron">&#9660;</span>
+								</div>
+								<div class="form-section-body">
+									<div class="form-group">
+										<label for="selModel">Model</label>
+										<select id="selModel"></select>
+									</div>
+									<div id="modelInfoDisplay" class="model-info hidden">
+										<div class="model-info-row">
+											<span class="label">Provider</span>
+											<span class="value" id="infoProvider">--</span>
+										</div>
+										<div class="model-info-row">
+											<span class="label">Context Window</span>
+											<span class="value" id="infoContext">--</span>
+										</div>
+										<div class="model-info-row">
+											<span class="label">Max Output</span>
+											<span class="value" id="infoMaxOutput">--</span>
+										</div>
+										<div class="tag-list" id="modelTags"></div>
+									</div>
+								</div>
+							</div>
 
-              <!-- Generation Settings -->
-              <div class="form-section" id="sectionGeneration">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Generation Settings</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="form-group mb-2">
-                    <label>Complexity</label>
-                    <div class="segmented" id="complexityControl">
-                      <button class="segmented-btn" data-complexity="simple">Simple</button>
-                      <button class="segmented-btn active" data-complexity="medium">Medium</button>
-                      <button class="segmented-btn" data-complexity="complex">Complex</button>
-                      <button class="segmented-btn" data-complexity="stress">Stress</button>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="inputTurns">Turns</label>
-                      <input type="number" id="inputTurns" min="1" max="150" placeholder="auto">
-                    </div>
-                    <div class="form-group">
-                      <label for="inputTools">Tools</label>
-                      <input type="number" id="inputTools" min="0" max="10" placeholder="auto">
-                    </div>
-                  </div>
-                  <!-- Prompt for legacy completions -->
-                  <div class="form-group hidden" id="promptGroup">
-                    <label for="inputPrompt">Prompt (Legacy Completions)</label>
-                    <textarea id="inputPrompt" rows="3" placeholder="Enter prompt text for legacy completions..."></textarea>
-                  </div>
-                </div>
-              </div>
+							<!-- Generation Settings -->
+							<div class="form-section" id="sectionGeneration">
+								<div class="form-section-header" data-toggle-section>
+									<span>Generation Settings</span>
+									<span class="chevron">&#9660;</span>
+								</div>
+								<div class="form-section-body">
+									<div class="form-group mb-2">
+										<label>Complexity</label>
+										<div class="segmented" id="complexityControl">
+											<button class="segmented-btn" data-complexity="simple">Simple</button>
+											<button class="segmented-btn active"
+												data-complexity="medium">Medium</button>
+											<button class="segmented-btn" data-complexity="complex">Complex</button>
+											<button class="segmented-btn" data-complexity="stress">Stress</button>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group">
+											<label for="inputTurns">Turns</label>
+											<input type="number" id="inputTurns" min="1" max="150" placeholder="auto">
+										</div>
+										<div class="form-group">
+											<label for="inputTools">Tools</label>
+											<input type="number" id="inputTools" min="0" max="10" placeholder="auto">
+										</div>
+									</div>
+									<!-- Prompt for legacy completions -->
+									<div class="form-group hidden" id="promptGroup">
+										<label for="inputPrompt">Prompt (Legacy Completions)</label>
+										<textarea id="inputPrompt" rows="3"
+											placeholder="Enter prompt text for legacy completions..."></textarea>
+									</div>
+								</div>
+							</div>
 
-              <!-- Advanced Options Toggle -->
-              <div class="advanced-toggle" id="advancedToggle">
-                <button type="button" class="advanced-toggle-btn" id="advancedToggleBtn">
-                  <span class="advanced-toggle-label">Advanced Options</span>
-                  <span class="advanced-badge hidden" id="advancedBadge">0</span>
-                  <span class="advanced-chevron">&#9654;</span>
-                </button>
-              </div>
+							<!-- Advanced Options Toggle -->
+							<div class="advanced-toggle" id="advancedToggle">
+								<button type="button" class="advanced-toggle-btn" id="advancedToggleBtn">
+									<span class="advanced-toggle-label">Advanced Options</span>
+									<span class="advanced-badge hidden" id="advancedBadge">0</span>
+									<span class="advanced-chevron">&#9654;</span>
+								</button>
+							</div>
 
-              <!-- Advanced Options Container (hidden by default) -->
-              <div class="advanced-options hidden" id="advancedOptions">
+							<!-- Advanced Options Container (hidden by default) -->
+							<div class="advanced-options hidden" id="advancedOptions">
 
-              <!-- Content Options (extracted from Generation Settings) -->
-              <div class="form-section collapsed" id="sectionContentOptions">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Content Options</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="form-group mb-2">
-                    <label for="inputTopic" data-tooltip="Specify a topic for generated conversations, or leave blank for random">Topic</label>
-                    <input type="text" id="inputTopic" placeholder="e.g. database optimization, API design...">
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="selLanguage" data-tooltip="Programming language used in code snippets">Language</label>
-                      <select id="selLanguage">
-                        <option value="">Auto (random)</option>
-                        <option>Python</option>
-                        <option>JavaScript</option>
-                        <option>TypeScript</option>
-                        <option>Java</option>
-                        <option>C#</option>
-                        <option>Go</option>
-                        <option>Rust</option>
-                        <option>Ruby</option>
-                        <option>PHP</option>
-                        <option>Swift</option>
-                        <option>Kotlin</option>
-                        <option>Scala</option>
-                        <option>Elixir</option>
-                        <option>SQL</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="selDomain" data-tooltip="Business domain context for generated scenarios">Domain</label>
-                      <select id="selDomain">
-                        <option value="">Auto (random)</option>
-                        <option value="e-commerce platform">E-Commerce</option>
-                        <option value="financial services">Financial Services</option>
-                        <option value="healthcare system">Healthcare</option>
-                        <option value="logistics management">Logistics</option>
-                        <option value="social media platform">Social Media</option>
-                        <option value="IoT platform">IoT Platform</option>
-                        <option value="enterprise resource planning">ERP</option>
-                        <option value="customer relationship management">CRM</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
+								<!-- Content Options (extracted from Generation Settings) -->
+								<div class="form-section collapsed" id="sectionContentOptions">
+									<div class="form-section-header" data-toggle-section>
+										<span>Content Options</span>
+										<span class="chevron">&#9660;</span>
+									</div>
+									<div class="form-section-body">
+										<div class="form-group mb-2">
+											<label for="inputTopic"
+												data-tooltip="Specify a topic for generated conversations, or leave blank for random">Topic</label>
+											<input type="text" id="inputTopic"
+												placeholder="e.g. database optimization, API design...">
+										</div>
+										<div class="form-row">
+											<div class="form-group">
+												<label for="selLanguage"
+													data-tooltip="Programming language used in code snippets">Language</label>
+												<select id="selLanguage">
+													<option value="">Auto (random)</option>
+													<option>Python</option>
+													<option>JavaScript</option>
+													<option>TypeScript</option>
+													<option>Java</option>
+													<option>C#</option>
+													<option>Go</option>
+													<option>Rust</option>
+													<option>Ruby</option>
+													<option>PHP</option>
+													<option>Swift</option>
+													<option>Kotlin</option>
+													<option>Scala</option>
+													<option>Elixir</option>
+													<option>SQL</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="selDomain"
+													data-tooltip="Business domain context for generated scenarios">Domain</label>
+												<select id="selDomain">
+													<option value="">Auto (random)</option>
+													<option value="e-commerce platform">E-Commerce</option>
+													<option value="financial services">Financial Services</option>
+													<option value="healthcare system">Healthcare</option>
+													<option value="logistics management">Logistics</option>
+													<option value="social media platform">Social Media</option>
+													<option value="IoT platform">IoT Platform</option>
+													<option value="enterprise resource planning">ERP</option>
+													<option value="customer relationship management">CRM</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
 
-              <!-- Model Parameters -->
-              <div class="form-section collapsed" id="sectionParams">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Model Parameters</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="form-group mb-2">
-                    <label for="rangeTemp" data-tooltip="Controls randomness. Lower = more deterministic, higher = more creative">Temperature</label>
-                    <div class="slider-group">
-                      <input type="range" id="rangeTemp" min="0" max="2" step="0.1" value="0.7">
-                      <span class="slider-value" id="tempValue">0.7</span>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="inputMaxTokens">Max Tokens</label>
-                      <input type="number" id="inputMaxTokens" min="1" max="100000" placeholder="auto">
-                    </div>
-                  </div>
-                  <div class="toggle-row">
-                    <label for="toggleStream" data-tooltip="Enable server-sent events for streaming responses">Stream</label>
-                    <div class="toggle">
-                      <input type="checkbox" id="toggleStream">
-                      <span class="toggle-slider"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+								<!-- Model Parameters -->
+								<div class="form-section collapsed" id="sectionParams">
+									<div class="form-section-header" data-toggle-section>
+										<span>Model Parameters</span>
+										<span class="chevron">&#9660;</span>
+									</div>
+									<div class="form-section-body">
+										<div class="form-group mb-2">
+											<label for="rangeTemp"
+												data-tooltip="Controls randomness. Lower = more deterministic, higher = more creative">Temperature</label>
+											<div class="slider-group">
+												<input type="range" id="rangeTemp" min="0" max="2" step="0.1"
+													value="0.7">
+												<span class="slider-value" id="tempValue">0.7</span>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group">
+												<label for="inputMaxTokens">Max Tokens</label>
+												<input type="number" id="inputMaxTokens" min="1" max="100000"
+													placeholder="auto">
+											</div>
+										</div>
+										<div class="toggle-row">
+											<label for="toggleStream"
+												data-tooltip="Enable server-sent events for streaming responses">Stream</label>
+											<div class="toggle">
+												<input type="checkbox" id="toggleStream">
+												<span class="toggle-slider"></span>
+											</div>
+										</div>
+									</div>
+								</div>
 
-              <!-- Embedding Options -->
-              <div class="form-section hidden" id="embeddingSection">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Embedding Options</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="form-group mb-2">
-                    <label for="inputEmbeddingTexts">Input Texts (one per line or comma-separated)</label>
-                    <textarea id="inputEmbeddingTexts" rows="4" placeholder="Enter texts for embedding..."></textarea>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="inputTextCount">Text Count</label>
-                      <input type="number" id="inputTextCount" min="1" max="100" placeholder="auto">
-                    </div>
-                    <div class="form-group">
-                      <label for="inputDimensions">Dimensions</label>
-                      <input type="number" id="inputDimensions" min="1" placeholder="auto">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label>Encoding Format</label>
-                    <div class="segmented" id="encodingControl">
-                      <button class="segmented-btn active" data-encoding="float">Float</button>
-                      <button class="segmented-btn" data-encoding="base64">Base64</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+								<!-- Embedding Options -->
+								<div class="form-section hidden" id="embeddingSection">
+									<div class="form-section-header" data-toggle-section>
+										<span>Embedding Options</span>
+										<span class="chevron">&#9660;</span>
+									</div>
+									<div class="form-section-body">
+										<div class="form-group mb-2">
+											<label for="inputEmbeddingTexts">Input Texts (one per line or
+												comma-separated)</label>
+											<textarea id="inputEmbeddingTexts" rows="4"
+												placeholder="Enter texts for embedding..."></textarea>
+										</div>
+										<div class="form-row">
+											<div class="form-group">
+												<label for="inputTextCount">Text Count</label>
+												<input type="number" id="inputTextCount" min="1" max="100"
+													placeholder="auto">
+											</div>
+											<div class="form-group">
+												<label for="inputDimensions">Dimensions</label>
+												<input type="number" id="inputDimensions" min="1" placeholder="auto">
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Encoding Format</label>
+											<div class="segmented" id="encodingControl">
+												<button class="segmented-btn active"
+													data-encoding="float">Float</button>
+												<button class="segmented-btn" data-encoding="base64">Base64</button>
+											</div>
+										</div>
+									</div>
+								</div>
 
-              <!-- Special Modes -->
-              <div class="form-section collapsed" id="sectionSpecialModes">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Special Modes</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="toggle-row">
-                    <label for="toggleTosca" data-tooltip="Generate requests compatible with Tosca test automation format">Tosca Compatible</label>
-                    <div class="toggle">
-                      <input type="checkbox" id="toggleTosca">
-                      <span class="toggle-slider"></span>
-                    </div>
-                  </div>
-                  <div class="toggle-row">
-                    <label for="toggleToolsOnly">Tools Only</label>
-                    <div class="toggle">
-                      <input type="checkbox" id="toggleToolsOnly">
-                      <span class="toggle-slider"></span>
-                    </div>
-                  </div>
-                  <div class="form-row mt-2">
-                    <div class="form-group">
-                      <label for="inputScreenshots">Screenshots</label>
-                      <input type="number" id="inputScreenshots" min="0" max="20" placeholder="0">
-                    </div>
-                    <div class="form-group">
-                      <label for="inputScreenshotSize">Screenshot Size (KB)</label>
-                      <input type="number" id="inputScreenshotSize" min="1" max="500" placeholder="50">
-                    </div>
-                  </div>
-                  <div class="toggle-row">
-                    <label for="toggleImagesOnly">Images Only</label>
-                    <div class="toggle">
-                      <input type="checkbox" id="toggleImagesOnly">
-                      <span class="toggle-slider"></span>
-                    </div>
-                  </div>
-                  <div class="toggle-row">
-                    <label for="toggleStrict" data-tooltip="Enforce strict schema validation on generated requests">Strict Mode</label>
-                    <div class="toggle">
-                      <input type="checkbox" id="toggleStrict">
-                      <span class="toggle-slider"></span>
-                    </div>
-                  </div>
-                  <div class="toggle-row">
-                    <label for="toggleHubFormat" data-tooltip="Format output for direct use with AI Hub API endpoints">Hub Format</label>
-                    <div class="toggle">
-                      <input type="checkbox" id="toggleHubFormat">
-                      <span class="toggle-slider"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+								<!-- Special Modes -->
+								<div class="form-section collapsed" id="sectionSpecialModes">
+									<div class="form-section-header" data-toggle-section>
+										<span>Special Modes</span>
+										<span class="chevron">&#9660;</span>
+									</div>
+									<div class="form-section-body">
+										<div class="toggle-row">
+											<label for="toggleTosca"
+												data-tooltip="Generate requests compatible with Tosca test automation format">Tosca
+												Compatible</label>
+											<div class="toggle">
+												<input type="checkbox" id="toggleTosca">
+												<span class="toggle-slider"></span>
+											</div>
+										</div>
+										<div class="toggle-row">
+											<label for="toggleToolsOnly">Tools Only</label>
+											<div class="toggle">
+												<input type="checkbox" id="toggleToolsOnly">
+												<span class="toggle-slider"></span>
+											</div>
+										</div>
+										<div class="form-row mt-2">
+											<div class="form-group">
+												<label for="inputScreenshots">Screenshots</label>
+												<input type="number" id="inputScreenshots" min="0" max="20"
+													placeholder="0">
+											</div>
+											<div class="form-group">
+												<label for="inputScreenshotSize">Screenshot Size (KB)</label>
+												<input type="number" id="inputScreenshotSize" min="1" max="500"
+													placeholder="50">
+											</div>
+										</div>
+										<div class="toggle-row">
+											<label for="toggleImagesOnly">Images Only</label>
+											<div class="toggle">
+												<input type="checkbox" id="toggleImagesOnly">
+												<span class="toggle-slider"></span>
+											</div>
+										</div>
+										<div class="toggle-row">
+											<label for="toggleStrict"
+												data-tooltip="Enforce strict schema validation on generated requests">Strict
+												Mode</label>
+											<div class="toggle">
+												<input type="checkbox" id="toggleStrict">
+												<span class="toggle-slider"></span>
+											</div>
+										</div>
+										<div class="toggle-row">
+											<label for="toggleHubFormat"
+												data-tooltip="Format output for direct use with AI Hub API endpoints">Hub
+												Format</label>
+											<div class="toggle">
+												<input type="checkbox" id="toggleHubFormat">
+												<span class="toggle-slider"></span>
+											</div>
+										</div>
+									</div>
+								</div>
 
-              <!-- Output Options -->
-              <div class="form-section collapsed" id="sectionOutputOptions">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Output Options</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="toggle-row">
-                    <label for="toggleCompact">Compact JSON</label>
-                    <div class="toggle">
-                      <input type="checkbox" id="toggleCompact">
-                      <span class="toggle-slider"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+								<!-- Output Options -->
+								<div class="form-section collapsed" id="sectionOutputOptions">
+									<div class="form-section-header" data-toggle-section>
+										<span>Output Options</span>
+										<span class="chevron">&#9660;</span>
+									</div>
+									<div class="form-section-body">
+										<div class="toggle-row">
+											<label for="toggleCompact">Compact JSON</label>
+											<div class="toggle">
+												<input type="checkbox" id="toggleCompact">
+												<span class="toggle-slider"></span>
+											</div>
+										</div>
+									</div>
+								</div>
 
-              <!-- Batch & Size Estimate -->
-              <div class="form-section collapsed" id="sectionBatch">
-                <div class="form-section-header" data-toggle-section>
-                  <span>Batch Generation</span>
-                  <span class="chevron">&#9660;</span>
-                </div>
-                <div class="form-section-body">
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="inputBatchCount">Count (number of requests)</label>
-                      <input type="number" id="inputBatchCount" min="1" max="100" value="1" placeholder="1">
-                    </div>
-                  </div>
-                  <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Generate multiple requests in a batch. Results are collected into a JSON array.</div>
-                </div>
-              </div>
+								<!-- Batch & Size Estimate -->
+								<div class="form-section collapsed" id="sectionBatch">
+									<div class="form-section-header" data-toggle-section>
+										<span>Batch Generation</span>
+										<span class="chevron">&#9660;</span>
+									</div>
+									<div class="form-section-body">
+										<div class="form-row">
+											<div class="form-group">
+												<label for="inputBatchCount">Count (number of requests)</label>
+												<input type="number" id="inputBatchCount" min="1" max="100" value="1"
+													placeholder="1">
+											</div>
+										</div>
+										<div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">
+											Generate multiple requests in a batch. Results are collected into a JSON
+											array.</div>
+									</div>
+								</div>
 
-              </div><!-- /advanced-options -->
+							</div><!-- /advanced-options -->
 
-              <!-- Generate button -->
-              <div class="generate-bar">
-                <div class="size-estimate" id="sizeEstimate">
-                  Est. size: <span class="size-value" id="sizeEstimateValue">~5 KB</span>
-                </div>
-                <div class="progress-bar hidden" id="batchProgress"><div class="progress-fill" id="batchProgressFill"></div></div>
-                <button class="btn btn-primary btn-generate" id="btnGenerate">Generate Request</button>
-              </div>
-            </div>
+							<!-- Generate button -->
+							<div class="generate-bar">
+								<div class="size-estimate" id="sizeEstimate">
+									Est. size: <span class="size-value" id="sizeEstimateValue">~5 KB</span>
+								</div>
+								<div class="progress-bar hidden" id="batchProgress">
+									<div class="progress-fill" id="batchProgressFill"></div>
+								</div>
+								<button class="btn btn-primary btn-generate" id="btnGenerate">Generate Request</button>
+							</div>
+						</div>
 
-            <!-- Right Panel: Output -->
-            <div class="panel-right">
-              <div class="output-toolbar">
-                <div class="output-toolbar-left">
-                  <span class="output-label">Output</span>
-                  <span class="output-size" id="outputSize"></span>
-                </div>
-                <div class="output-toolbar-right">
-                  <button class="btn-icon" id="btnCopy" title="Copy to clipboard">&#128203;</button>
-                  <button class="btn-icon" id="btnDownload" title="Download as JSON">&#11015;</button>
-                </div>
-              </div>
+						<!-- Right Panel: Output -->
+						<div class="panel-right">
+							<div class="output-toolbar">
+								<div class="output-toolbar-left">
+									<span class="output-label">Output</span>
+									<span class="output-size" id="outputSize"></span>
+								</div>
+								<div class="output-toolbar-right">
+									<button class="btn-icon" id="btnCopy" title="Copy to clipboard">&#128203;</button>
+									<button class="btn-icon" id="btnDownload" title="Download as JSON">&#11015;</button>
+								</div>
+							</div>
 
-              <div class="batch-tabs hidden" id="batchTabs"></div>
+							<div class="batch-tabs hidden" id="batchTabs"></div>
 
-              <div class="output-content" id="outputContent">
-                <div class="empty-state" id="emptyState">
-                  <div class="empty-state-icon">{ }</div>
-                  <div class="empty-state-text">No request generated yet</div>
-                  <div class="empty-state-hint">Configure the options on the left and click Generate</div>
-                  <div class="empty-state-hint">Keyboard shortcut: <kbd>Ctrl</kbd>+<kbd>Enter</kbd></div>
-                </div>
-                <div class="json-output hidden" id="jsonOutput"></div>
-              </div>
+							<div class="output-content" id="outputContent">
+								<div class="empty-state" id="emptyState">
+									<div class="empty-state-icon">{ }</div>
+									<div class="empty-state-text">No request generated yet</div>
+									<div class="empty-state-hint">Configure the options on the left and click Generate
+									</div>
+									<div class="empty-state-hint">Keyboard shortcut: <kbd>Ctrl</kbd>+<kbd>Enter</kbd>
+									</div>
+								</div>
+								<div class="json-output hidden" id="jsonOutput"></div>
+							</div>
 
-              <div class="summary-panel hidden" id="summaryPanel">
-                <div class="summary-header">Generation Summary</div>
-                <div id="endpointPathDisplay" class="endpoint-path hidden"></div>
-                <div class="summary-body" id="summaryBody"></div>
-                <div class="summary-warnings" id="summaryWarnings"></div>
-              </div>
-            </div>
-          </div>
-        </div><!-- /tool-request-generator -->
+							<div class="summary-panel hidden" id="summaryPanel">
+								<div class="summary-header">Generation Summary</div>
+								<div id="endpointPathDisplay" class="endpoint-path hidden"></div>
+								<div class="summary-body" id="summaryBody"></div>
+								<div class="summary-warnings" id="summaryWarnings"></div>
+							</div>
+						</div>
+					</div>
+				</div><!-- /tool-request-generator -->
 
-        <!-- Usage Calculator Tool -->
-        <div id="tool-usage-calculator" class="tool-panel" role="tabpanel">
-          <div class="main usage-calc">
+				<!-- Usage Calculator Tool -->
+				<div id="tool-usage-calculator" class="tool-panel" role="tabpanel">
+					<div class="main usage-calc">
 
-            <!-- Left Panel -->
-            <div class="panel-left">
-              <nav class="tab-navigation">
-                <button class="tab-btn active" data-tab="calculator">
-                  <span class="tab-btn-label">Calculator</span>
-                  <span class="tab-btn-hint">Single event pricing</span>
-                </button>
-                <button class="tab-btn" data-tab="session-tracker">
-                  <span class="tab-btn-label">Session Tracker</span>
-                  <span class="tab-btn-hint">Multi-event accumulation</span>
-                </button>
-                <button class="tab-btn" data-tab="test-generator">
-                  <span class="tab-btn-label">Test Generator</span>
-                  <span class="tab-btn-hint">Generate test payloads</span>
-                </button>
-              </nav>
+						<!-- Left Panel -->
+						<div class="panel-left">
+							<nav class="tab-navigation">
+								<button class="tab-btn active" data-tab="calculator">
+									<span class="tab-btn-label">Calculator</span>
+									<span class="tab-btn-hint">Single event pricing</span>
+								</button>
+								<button class="tab-btn" data-tab="session-tracker">
+									<span class="tab-btn-label">Session Tracker</span>
+									<span class="tab-btn-hint">Multi-event accumulation</span>
+								</button>
+								<button class="tab-btn" data-tab="test-generator">
+									<span class="tab-btn-label">Test Generator</span>
+									<span class="tab-btn-hint">Generate test payloads</span>
+								</button>
+							</nav>
 
-              <!-- Calculator Tab Left -->
-              <div id="calculator-tab-left" class="uc-tab-left active">
-                <nav class="subtab-navigation">
-                  <button class="subtab-btn active" data-subtab="token-based">Token-Based</button>
-                  <button class="subtab-btn" data-subtab="metrics-based">Metrics-Based</button>
-                </nav>
+							<!-- Calculator Tab Left -->
+							<div id="calculator-tab-left" class="uc-tab-left active">
+								<nav class="subtab-navigation">
+									<button class="subtab-btn active" data-subtab="token-based">Token-Based</button>
+									<button class="subtab-btn" data-subtab="metrics-based">Metrics-Based</button>
+								</nav>
 
-                <!-- Token-Based Subtab Left -->
-                <div id="token-based-subtab-left" class="uc-subtab-left active">
-                  <div class="card">
-                    <h3 class="card-title">JSON Input</h3>
-                    <div class="form-group">
-                      <label for="json-input">Paste Usage Event JSON</label>
-                      <textarea id="json-input" class="code-input" placeholder='{"model": "gpt-5-2025-08-07", "usage": {"prompt_tokens": 501, "completion_tokens": 249, ...}}' rows="10"></textarea>
-                      <button class="btn btn-secondary" id="parse-json-btn">Parse JSON</button>
-                    </div>
-                  </div>
-                  <div class="card">
-                    <h3 class="card-title">Manual Configuration</h3>
-                    <div class="form-group">
-                      <label for="provider-select">Provider</label>
-                      <select id="provider-select" class="form-select"><option value="">Select Provider</option><option value="AzureOpenAI">AzureOpenAI</option><option value="Bedrock">Bedrock</option></select>
-                    </div>
-                    <div class="form-group">
-                      <label for="region-select">Region</label>
-                      <select id="region-select" class="form-select"><option value="">Select Region</option></select>
-                    </div>
-                    <div class="form-group">
-                      <label for="model-select">Model</label>
-                      <select id="model-select" class="form-select"><option value="">Select Model</option></select>
-                    </div>
-                    <div id="token-fields-container">
-                      <div class="form-group"><label for="input-tokens">Input Tokens</label><input type="number" id="input-tokens" class="form-input" placeholder="0" min="0"></div>
-                      <div class="form-group"><label for="output-tokens">Output Tokens</label><input type="number" id="output-tokens" class="form-input" placeholder="0" min="0"></div>
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group form-group-half"><label for="markup-input">Markup</label><input type="number" id="markup-input" class="form-input" value="1.5" step="0.1" min="0"></div>
-                      <div class="form-group form-group-half"><label for="credit-price-input">Credit Price ($)</label><input type="number" id="credit-price-input" class="form-input" value="0.15" step="0.01" min="0"></div>
-                    </div>
-                    <button class="btn btn-primary" id="calculate-tokens-btn">Calculate Credits</button>
-                  </div>
-                </div>
+								<!-- Token-Based Subtab Left -->
+								<div id="token-based-subtab-left" class="uc-subtab-left active">
+									<div class="card">
+										<h3 class="card-title">JSON Input</h3>
+										<div class="form-group">
+											<label for="json-input">Paste Usage Event JSON</label>
+											<textarea id="json-input" class="code-input"
+												placeholder='{"model": "gpt-5-2025-08-07", "usage": {"prompt_tokens": 501, "completion_tokens": 249, ...}}'
+												rows="10"></textarea>
+											<button class="btn btn-secondary" id="parse-json-btn">Parse JSON</button>
+										</div>
+									</div>
+									<div class="card">
+										<h3 class="card-title">Manual Configuration</h3>
+										<div class="form-group">
+											<label for="provider-select">Provider</label>
+											<select id="provider-select" class="form-select">
+												<option value="">Select Provider</option>
+												<option value="AzureOpenAI">AzureOpenAI</option>
+												<option value="Bedrock">Bedrock</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="region-select">Region</label>
+											<select id="region-select" class="form-select">
+												<option value="">Select Region</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="model-select">Model</label>
+											<select id="model-select" class="form-select">
+												<option value="">Select Model</option>
+											</select>
+										</div>
+										<div id="token-fields-container">
+											<div class="form-group"><label for="input-tokens">Input Tokens</label><input
+													type="number" id="input-tokens" class="form-input" placeholder="0"
+													min="0"></div>
+											<div class="form-group"><label for="output-tokens">Output
+													Tokens</label><input type="number" id="output-tokens"
+													class="form-input" placeholder="0" min="0"></div>
+										</div>
+										<div class="form-row">
+											<div class="form-group form-group-half"><label
+													for="markup-input">Markup</label><input type="number"
+													id="markup-input" class="form-input" value="1.5" step="0.1" min="0">
+											</div>
+											<div class="form-group form-group-half"><label
+													for="credit-price-input">Credit Price ($)</label><input
+													type="number" id="credit-price-input" class="form-input"
+													value="0.15" step="0.01" min="0"></div>
+										</div>
+										<button class="btn btn-primary" id="calculate-tokens-btn">Calculate
+											Credits</button>
+									</div>
+								</div>
 
-                <!-- Metrics-Based Subtab Left -->
-                <div id="metrics-based-subtab-left" class="uc-subtab-left">
-                  <div class="card">
-                    <h3 class="card-title">Metrics Configuration</h3>
-                    <div class="form-group"><label for="module-select">Module</label><select id="module-select" class="form-select"><option value="">Select Module</option><option value="ATA">ATA (Autonomous Test Agent)</option><option value="ATC">ATC (Autonomous Test Creator)</option></select></div>
-                    <div class="collapsible-section"><button class="collapsible-header"><span>TestSteps Configuration</span><span class="collapsible-icon">+</span></button><div class="collapsible-content"><div class="form-group"><label for="test-steps-count">Number of TestSteps</label><input type="number" id="test-steps-count" class="form-input" placeholder="0" min="0"></div><div class="form-group"><label for="test-steps-multiplier">TestSteps Multiplier</label><input type="number" id="test-steps-multiplier" class="form-input" value="2.0" step="0.1" min="0"></div></div></div>
-                    <div class="collapsible-section"><button class="collapsible-header"><span>TestCases Configuration</span><span class="collapsible-icon">+</span></button><div class="collapsible-content"><div class="form-group"><label for="test-cases-count">Number of TestCases</label><input type="number" id="test-cases-count" class="form-input" placeholder="0" min="0"></div><div class="form-group"><label for="test-cases-multiplier">TestCases Multiplier</label><input type="number" id="test-cases-multiplier" class="form-input" value="5.0" step="0.1" min="0"></div></div></div>
-                    <button class="btn btn-primary" id="calculate-metrics-btn">Calculate Credits</button>
-                  </div>
-                </div>
-              </div>
+								<!-- Metrics-Based Subtab Left -->
+								<div id="metrics-based-subtab-left" class="uc-subtab-left">
+									<div class="card">
+										<h3 class="card-title">Metrics Configuration</h3>
+										<div class="form-group"><label for="module-select">Module</label><select
+												id="module-select" class="form-select">
+												<option value="">Select Module</option>
+												<option value="ATA">ATA (Autonomous Test Agent)</option>
+												<option value="ATC">ATC (Autonomous Test Creator)</option>
+											</select></div>
+										<div class="collapsible-section"><button
+												class="collapsible-header"><span>TestSteps Configuration</span><span
+													class="collapsible-icon">+</span></button>
+											<div class="collapsible-content">
+												<div class="form-group"><label for="test-steps-count">Number of
+														TestSteps</label><input type="number" id="test-steps-count"
+														class="form-input" placeholder="0" min="0"></div>
+												<div class="form-group"><label for="test-steps-multiplier">TestSteps
+														Multiplier</label><input type="number"
+														id="test-steps-multiplier" class="form-input" value="2.0"
+														step="0.1" min="0"></div>
+											</div>
+										</div>
+										<div class="collapsible-section"><button
+												class="collapsible-header"><span>TestCases Configuration</span><span
+													class="collapsible-icon">+</span></button>
+											<div class="collapsible-content">
+												<div class="form-group"><label for="test-cases-count">Number of
+														TestCases</label><input type="number" id="test-cases-count"
+														class="form-input" placeholder="0" min="0"></div>
+												<div class="form-group"><label for="test-cases-multiplier">TestCases
+														Multiplier</label><input type="number"
+														id="test-cases-multiplier" class="form-input" value="5.0"
+														step="0.1" min="0"></div>
+											</div>
+										</div>
+										<button class="btn btn-primary" id="calculate-metrics-btn">Calculate
+											Credits</button>
+									</div>
+								</div>
+							</div>
 
-              <!-- Session Tracker Tab Left -->
-              <div id="session-tracker-tab-left" class="uc-tab-left">
-                <div class="card"><h3 class="card-title">Session Info</h3><div class="session-info-bar"><span class="session-label">Session ID:</span><span id="session-id" class="session-id-value">Waiting for first event...</span></div></div>
-                <div class="card"><h3 class="card-title">Add Usage Event</h3><div class="form-group"><label for="session-json-input">Paste JSON Request Body</label><textarea id="session-json-input" class="code-input" placeholder='{
+							<!-- Session Tracker Tab Left -->
+							<div id="session-tracker-tab-left" class="uc-tab-left">
+								<div class="card">
+									<h3 class="card-title">Session Info</h3>
+									<div class="session-info-bar"><span class="session-label">Session ID:</span><span
+											id="session-id" class="session-id-value">Waiting for first event...</span>
+									</div>
+								</div>
+								<div class="card">
+									<h3 class="card-title">Add Usage Event</h3>
+									<div class="form-group"><label for="session-json-input">Paste JSON Request
+											Body</label><textarea id="session-json-input" class="code-input"
+											placeholder='{
   "module": "Default",
   "skillId": "workflows",
   "sessionId": "test-session-abc12345",
@@ -526,331 +618,541 @@
     "OutputTokens": 249
   },
   "SessionEnded": false
-}' rows="16"></textarea><p id="session-json-error" class="error-message" style="display: none;"></p></div><div class="button-group"><button class="btn btn-primary" id="add-event-btn">Add Event</button><button class="btn btn-warning" id="end-session-btn">End Session</button><button class="btn btn-secondary" id="reset-session-btn">Reset Session</button></div></div>
-              </div>
+}' rows="16"></textarea>
+										<p id="session-json-error" class="error-message" style="display: none;"></p>
+									</div>
+									<div class="button-group"><button class="btn btn-primary" id="add-event-btn">Add
+											Event</button><button class="btn btn-warning" id="end-session-btn">End
+											Session</button><button class="btn btn-secondary"
+											id="reset-session-btn">Reset Session</button></div>
+								</div>
+							</div>
 
-              <!-- Test Generator Tab Left -->
-              <div id="test-generator-tab-left" class="uc-tab-left">
-                <div class="card">
-                  <h3 class="card-title">Scenario Configuration</h3>
-                  <div class="form-group"><label for="scenario-type">Scenario Type</label><select id="scenario-type" class="form-select"><option value="single-token">Single TokenBased Event</option><option value="multi-token">Multi-Event Token Accumulation</option><option value="metric-only">MetricBased Only (ATA/ATC)</option><option value="mixed">Mixed Tokens + Metrics</option><option value="multi-provider">Multi-Provider Session</option><option value="multi-model">Multi-Model Same Provider</option><option value="bedrock-cache">Bedrock with Cache Creation</option></select></div>
-                  <div class="collapsible-section"><button class="collapsible-header"><span>Randomization Controls</span><span class="collapsible-icon">+</span></button><div class="collapsible-content">
-                    <h4 class="section-subheading">Input Tokens Range</h4><div class="form-row"><div class="form-group form-group-half"><label for="gen-input-min">Min</label><input type="number" id="gen-input-min" class="form-input" value="100" min="0"></div><div class="form-group form-group-half"><label for="gen-input-max">Max</label><input type="number" id="gen-input-max" class="form-input" value="100000" min="0"></div></div>
-                    <h4 class="section-subheading">Output Tokens Range</h4><div class="form-row"><div class="form-group form-group-half"><label for="gen-output-min">Min</label><input type="number" id="gen-output-min" class="form-input" value="50" min="0"></div><div class="form-group form-group-half"><label for="gen-output-max">Max</label><input type="number" id="gen-output-max" class="form-input" value="50000" min="0"></div></div>
-                    <h4 class="section-subheading">Cache Probability</h4><div class="form-row"><div class="form-group form-group-half"><label for="gen-cache-prob">Cache Read %</label><input type="number" id="gen-cache-prob" class="form-input" value="30" min="0" max="100"></div><div class="form-group form-group-half"><label for="gen-cache-creation-prob">Cache Creation %</label><input type="number" id="gen-cache-creation-prob" class="form-input" value="20" min="0" max="100"></div></div>
-                    <h4 class="section-subheading">Test Steps Range</h4><div class="form-row"><div class="form-group form-group-half"><label for="gen-steps-min">Min</label><input type="number" id="gen-steps-min" class="form-input" value="1" min="0"></div><div class="form-group form-group-half"><label for="gen-steps-max">Max</label><input type="number" id="gen-steps-max" class="form-input" value="500" min="0"></div></div>
-                    <h4 class="section-subheading">Test Cases Range</h4><div class="form-row"><div class="form-group form-group-half"><label for="gen-cases-min">Min</label><input type="number" id="gen-cases-min" class="form-input" value="1" min="0"></div><div class="form-group form-group-half"><label for="gen-cases-max">Max</label><input type="number" id="gen-cases-max" class="form-input" value="50" min="0"></div></div>
-                    <h4 class="section-subheading">Event Count Range</h4><div class="form-row"><div class="form-group form-group-half"><label for="gen-event-min">Min Events</label><input type="number" id="gen-event-min" class="form-input" value="2" min="1"></div><div class="form-group form-group-half"><label for="gen-event-max">Max Events</label><input type="number" id="gen-event-max" class="form-input" value="5" min="1"></div></div>
-                  </div></div>
-                  <div class="collapsible-section"><button class="collapsible-header"><span>Provider Selection</span><span class="collapsible-icon">+</span></button><div class="collapsible-content"><div class="checkbox-grid"><label class="checkbox-label"><input type="checkbox" id="gen-azure" checked><span class="checkbox-custom"></span>AzureOpenAI</label><label class="checkbox-label"><input type="checkbox" id="gen-bedrock" checked><span class="checkbox-custom"></span>Bedrock</label></div></div></div>
-                  <div class="collapsible-section"><button class="collapsible-header"><span>Template Variables</span><span class="collapsible-icon">+</span></button><div class="collapsible-content">
-                    <div class="form-group"><label for="gen-session-id">Session ID (exact)</label><input type="text" id="gen-session-id" class="form-input" placeholder="Leave empty to auto-generate from prefix"></div>
-                    <div class="form-group"><label for="gen-session-prefix">Session ID Prefix (when no exact ID)</label><input type="text" id="gen-session-prefix" class="form-input" value="test-session-"></div>
-                    <div class="form-group"><label for="gen-tenant">Tenant Name</label><input type="text" id="gen-tenant" class="form-input" value="{{X_TENANT_NAME}}"></div>
-                    <div class="form-group"><label for="gen-product">Product Name</label><input type="text" id="gen-product" class="form-input" value="{{X_PRODUCT_NAME}}"></div>
-                  </div></div>
-                  <div class="button-group"><button class="btn btn-primary" id="generate-btn">Generate Payloads</button><button class="btn btn-secondary" id="generate-batch-btn">Generate Batch</button><button class="btn btn-accent" id="copy-all-btn">Copy All</button><button class="btn btn-secondary" id="clear-generator-btn">Clear</button></div>
-                </div>
-              </div>
-            </div>
+							<!-- Test Generator Tab Left -->
+							<div id="test-generator-tab-left" class="uc-tab-left">
+								<div class="card">
+									<h3 class="card-title">Scenario Configuration</h3>
+									<div class="form-group"><label for="scenario-type">Scenario Type</label><select
+											id="scenario-type" class="form-select">
+											<option value="single-token">Single TokenBased Event</option>
+											<option value="multi-token">Multi-Event Token Accumulation</option>
+											<option value="metric-only">MetricBased Only (ATA/ATC)</option>
+											<option value="mixed">Mixed Tokens + Metrics</option>
+											<option value="multi-provider">Multi-Provider Session</option>
+											<option value="multi-model">Multi-Model Same Provider</option>
+											<option value="bedrock-cache">Bedrock with Cache Creation</option>
+										</select></div>
+									<div class="collapsible-section"><button
+											class="collapsible-header"><span>Randomization Controls</span><span
+												class="collapsible-icon">+</span></button>
+										<div class="collapsible-content">
+											<h4 class="section-subheading">Input Tokens Range</h4>
+											<div class="form-row">
+												<div class="form-group form-group-half"><label
+														for="gen-input-min">Min</label><input type="number"
+														id="gen-input-min" class="form-input" value="100" min="0"></div>
+												<div class="form-group form-group-half"><label
+														for="gen-input-max">Max</label><input type="number"
+														id="gen-input-max" class="form-input" value="100000" min="0">
+												</div>
+											</div>
+											<h4 class="section-subheading">Output Tokens Range</h4>
+											<div class="form-row">
+												<div class="form-group form-group-half"><label
+														for="gen-output-min">Min</label><input type="number"
+														id="gen-output-min" class="form-input" value="50" min="0"></div>
+												<div class="form-group form-group-half"><label
+														for="gen-output-max">Max</label><input type="number"
+														id="gen-output-max" class="form-input" value="50000" min="0">
+												</div>
+											</div>
+											<h4 class="section-subheading">Cache Probability</h4>
+											<div class="form-row">
+												<div class="form-group form-group-half"><label
+														for="gen-cache-prob">Cache Read %</label><input type="number"
+														id="gen-cache-prob" class="form-input" value="30" min="0"
+														max="100"></div>
+												<div class="form-group form-group-half"><label
+														for="gen-cache-creation-prob">Cache Creation %</label><input
+														type="number" id="gen-cache-creation-prob" class="form-input"
+														value="20" min="0" max="100"></div>
+											</div>
+											<h4 class="section-subheading">Test Steps Range</h4>
+											<div class="form-row">
+												<div class="form-group form-group-half"><label
+														for="gen-steps-min">Min</label><input type="number"
+														id="gen-steps-min" class="form-input" value="1" min="0"></div>
+												<div class="form-group form-group-half"><label
+														for="gen-steps-max">Max</label><input type="number"
+														id="gen-steps-max" class="form-input" value="500" min="0"></div>
+											</div>
+											<h4 class="section-subheading">Test Cases Range</h4>
+											<div class="form-row">
+												<div class="form-group form-group-half"><label
+														for="gen-cases-min">Min</label><input type="number"
+														id="gen-cases-min" class="form-input" value="1" min="0"></div>
+												<div class="form-group form-group-half"><label
+														for="gen-cases-max">Max</label><input type="number"
+														id="gen-cases-max" class="form-input" value="50" min="0"></div>
+											</div>
+											<h4 class="section-subheading">Event Count Range</h4>
+											<div class="form-row">
+												<div class="form-group form-group-half"><label for="gen-event-min">Min
+														Events</label><input type="number" id="gen-event-min"
+														class="form-input" value="2" min="1"></div>
+												<div class="form-group form-group-half"><label for="gen-event-max">Max
+														Events</label><input type="number" id="gen-event-max"
+														class="form-input" value="5" min="1"></div>
+											</div>
+										</div>
+									</div>
+									<div class="collapsible-section"><button class="collapsible-header"><span>Provider
+												Selection</span><span class="collapsible-icon">+</span></button>
+										<div class="collapsible-content">
+											<div class="checkbox-grid"><label class="checkbox-label"><input
+														type="checkbox" id="gen-azure" checked><span
+														class="checkbox-custom"></span>AzureOpenAI</label><label
+													class="checkbox-label"><input type="checkbox" id="gen-bedrock"
+														checked><span class="checkbox-custom"></span>Bedrock</label>
+											</div>
+										</div>
+									</div>
+									<div class="collapsible-section"><button class="collapsible-header"><span>Template
+												Variables</span><span class="collapsible-icon">+</span></button>
+										<div class="collapsible-content">
+											<div class="form-group"><label for="gen-session-id">Session ID
+													(exact)</label><input type="text" id="gen-session-id"
+													class="form-input"
+													placeholder="Leave empty to auto-generate from prefix"></div>
+											<div class="form-group"><label for="gen-session-prefix">Session ID Prefix
+													(when no exact ID)</label><input type="text" id="gen-session-prefix"
+													class="form-input" value="test-session-"></div>
+											<div class="form-group"><label for="gen-tenant">Tenant Name</label><input
+													type="text" id="gen-tenant" class="form-input"
+													value="{{X_TENANT_NAME}}"></div>
+											<div class="form-group"><label for="gen-product">Product Name</label><input
+													type="text" id="gen-product" class="form-input"
+													value="{{X_PRODUCT_NAME}}"></div>
+										</div>
+									</div>
+									<div class="button-group"><button class="btn btn-primary" id="generate-btn">Generate
+											Payloads</button><button class="btn btn-secondary"
+											id="generate-batch-btn">Generate Batch</button><button
+											class="btn btn-accent" id="copy-all-btn">Copy All</button><button
+											class="btn btn-secondary" id="clear-generator-btn">Clear</button></div>
+								</div>
+							</div>
+						</div>
 
-            <!-- Right Panel -->
-            <div class="panel-right">
-              <div class="uc-panel-right-content">
-                <!-- Calculator Tab Right -->
-                <section id="calculator-tab" class="tab-content active">
-                  <nav class="subtab-navigation">
-                    <button class="subtab-btn active" data-subtab="token-based">Token-Based</button>
-                    <button class="subtab-btn" data-subtab="metrics-based">Metrics-Based</button>
-                  </nav>
+						<!-- Right Panel -->
+						<div class="panel-right">
+							<div class="uc-panel-right-content">
+								<!-- Calculator Tab Right -->
+								<section id="calculator-tab" class="tab-content active">
+									<nav class="subtab-navigation">
+										<button class="subtab-btn active" data-subtab="token-based">Token-Based</button>
+										<button class="subtab-btn" data-subtab="metrics-based">Metrics-Based</button>
+									</nav>
 
-                  <!-- Token-Based Subtab Right -->
-                  <div id="token-based-subtab" class="subtab-content active">
-                    <div class="sticky-result-bar hidden" id="stickyResult">
-                      <span class="sticky-result-label">Credits:</span>
-                      <span class="sticky-result-value" id="stickyResultValue">0.0000</span>
-                    </div>
-                    <div class="card result-card"><h3 class="card-title">Calculation Results</h3><div id="token-results" class="results-display"><p class="placeholder-text">Configure inputs and click Calculate to see results</p></div></div>
-                    <div class="card"><h3 class="card-title">Pricing Breakdown</h3><div id="pricing-breakdown" class="results-display"><p class="placeholder-text">Pricing details will appear here</p></div></div>
-                  </div>
+									<!-- Token-Based Subtab Right -->
+									<div id="token-based-subtab" class="subtab-content active">
+										<div class="sticky-result-bar hidden" id="stickyResult">
+											<span class="sticky-result-label">Credits:</span>
+											<span class="sticky-result-value" id="stickyResultValue">0.0000</span>
+										</div>
+										<div class="card result-card">
+											<h3 class="card-title">Calculation Results</h3>
+											<div id="token-results" class="results-display">
+												<p class="placeholder-text">Configure inputs and click Calculate to see
+													results</p>
+											</div>
+										</div>
+										<div class="card">
+											<h3 class="card-title">Pricing Breakdown</h3>
+											<div id="pricing-breakdown" class="results-display">
+												<p class="placeholder-text">Pricing details will appear here</p>
+											</div>
+										</div>
+									</div>
 
-                  <!-- Metrics-Based Subtab Right -->
-                  <div id="metrics-based-subtab" class="subtab-content">
-                    <div class="card result-card"><h3 class="card-title">Metrics Results</h3><div id="metrics-results" class="results-display"><p class="placeholder-text">Configure metrics and click Calculate to see results</p></div></div>
-                  </div>
-                </section>
+									<!-- Metrics-Based Subtab Right -->
+									<div id="metrics-based-subtab" class="subtab-content">
+										<div class="card result-card">
+											<h3 class="card-title">Metrics Results</h3>
+											<div id="metrics-results" class="results-display">
+												<p class="placeholder-text">Configure metrics and click Calculate to see
+													results</p>
+											</div>
+										</div>
+									</div>
+								</section>
 
-                <!-- Session Tracker Tab Right -->
-                <section id="session-tracker-tab" class="tab-content">
-                  <div class="card"><h3 class="card-title">Accumulated Token Usage</h3><div id="accumulation-tables"><table class="data-table"><thead><tr><th>Provider</th><th>Region</th><th>Model</th><th>Input Tokens</th><th>Output Tokens</th><th>Cache Read</th><th>Cache Creation</th><th>Status</th></tr></thead><tbody id="accumulation-tbody"><tr><td colspan="8" class="placeholder-text">No events recorded yet</td></tr></tbody></table></div></div>
-                  <div class="card"><h3 class="card-title">Accumulated Metrics</h3><div id="metrics-table"><p class="placeholder-text">No metric events reported yet</p></div></div>
-                  <div class="card result-card"><h3 class="card-title">Expected Results</h3><div class="results-display"><div class="result-row"><span class="result-label">Expected Credits Used:</span><span class="result-value" id="total-credits">0.000000</span></div><div class="result-row"><span class="result-label">Events Count:</span><span class="result-value" id="events-count">0</span></div><div class="result-row"><span class="result-label">Session Status:</span><span class="result-value" id="session-status"><span class="badge badge-token">Active</span></span></div></div><div id="expected-breakdown"></div></div>
-                  <div class="card"><h3 class="card-title">Balance Verification</h3><div class="form-group"><label for="session-balance-before">Balance Before (paste API response)</label><textarea id="session-balance-before" class="code-input" placeholder='{"usage": 0, "balance": 72000, "overage": 0, "hasAccess": true}' rows="3"></textarea></div><div class="form-group"><label for="session-balance-after">Balance After (paste API response)</label><textarea id="session-balance-after" class="code-input" placeholder='{"usage": 1049.79, "balance": 71938.71, "overage": 0, "hasAccess": true}' rows="3"></textarea></div></div>
-                  <div id="verification-card" class="card result-card" style="display: none;"><h3 class="card-title">Verification Results</h3><div id="verification-results" class="results-display"></div></div>
-                  <div class="card"><h3 class="card-title">Event Timeline</h3><div id="event-timeline" class="timeline-container"><p class="placeholder-text">Events will appear here as they are added</p></div></div>
-                </section>
+								<!-- Session Tracker Tab Right -->
+								<section id="session-tracker-tab" class="tab-content">
+									<div class="card">
+										<h3 class="card-title">Accumulated Token Usage</h3>
+										<div id="accumulation-tables">
+											<table class="data-table">
+												<thead>
+													<tr>
+														<th>Provider</th>
+														<th>Region</th>
+														<th>Model</th>
+														<th>Input Tokens</th>
+														<th>Output Tokens</th>
+														<th>Cache Read</th>
+														<th>Cache Creation</th>
+														<th>Status</th>
+													</tr>
+												</thead>
+												<tbody id="accumulation-tbody">
+													<tr>
+														<td colspan="8" class="placeholder-text">No events recorded yet
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="card">
+										<h3 class="card-title">Accumulated Metrics</h3>
+										<div id="metrics-table">
+											<p class="placeholder-text">No metric events reported yet</p>
+										</div>
+									</div>
+									<div class="card result-card">
+										<h3 class="card-title">Expected Results</h3>
+										<div class="results-display">
+											<div class="result-row"><span class="result-label">Expected Credits
+													Used:</span><span class="result-value"
+													id="total-credits">0.000000</span></div>
+											<div class="result-row"><span class="result-label">Events Count:</span><span
+													class="result-value" id="events-count">0</span></div>
+											<div class="result-row"><span class="result-label">Session
+													Status:</span><span class="result-value" id="session-status"><span
+														class="badge badge-token">Active</span></span></div>
+										</div>
+										<div id="expected-breakdown"></div>
+									</div>
+									<div class="card">
+										<h3 class="card-title">Balance Verification</h3>
+										<div class="form-group"><label for="session-balance-before">Balance Before
+												(paste API response)</label><textarea id="session-balance-before"
+												class="code-input"
+												placeholder='{"usage": 0, "balance": 72000, "overage": 0, "hasAccess": true}'
+												rows="3"></textarea></div>
+										<div class="form-group"><label for="session-balance-after">Balance After (paste
+												API response)</label><textarea id="session-balance-after"
+												class="code-input"
+												placeholder='{"usage": 1049.79, "balance": 71938.71, "overage": 0, "hasAccess": true}'
+												rows="3"></textarea></div>
+									</div>
+									<div id="verification-card" class="card result-card" style="display: none;">
+										<h3 class="card-title">Verification Results</h3>
+										<div id="verification-results" class="results-display"></div>
+									</div>
+									<div class="card">
+										<h3 class="card-title">Event Timeline</h3>
+										<div id="event-timeline" class="timeline-container">
+											<p class="placeholder-text">Events will appear here as they are added</p>
+										</div>
+									</div>
+								</section>
 
-                <!-- Test Generator Tab Right -->
-                <section id="test-generator-tab" class="tab-content">
-                  <div class="card"><h3 class="card-title">Generated Payloads</h3><div id="generated-payloads" class="code-output"><p class="placeholder-text">Generated payloads will appear here...</p></div></div>
-                  <div class="card result-card"><h3 class="card-title">Expected Results</h3><div id="generated-expected" class="code-output"><p class="placeholder-text">Expected calculation results will appear here...</p></div></div>
-                </section>
-              </div>
-            </div>
+								<!-- Test Generator Tab Right -->
+								<section id="test-generator-tab" class="tab-content">
+									<div class="card">
+										<h3 class="card-title">Generated Payloads</h3>
+										<div id="generated-payloads" class="code-output">
+											<p class="placeholder-text">Generated payloads will appear here...</p>
+										</div>
+									</div>
+									<div class="card result-card">
+										<h3 class="card-title">Expected Results</h3>
+										<div id="generated-expected" class="code-output">
+											<p class="placeholder-text">Expected calculation results will appear here...
+											</p>
+										</div>
+									</div>
+								</section>
+							</div>
+						</div>
 
-          </div>
-        </div><!-- /tool-usage-calculator -->
+					</div>
+				</div><!-- /tool-usage-calculator -->
 
-        <!-- JWT Manager Tool -->
-        <div id="tool-jwt-manager" class="tool-panel" role="tabpanel">
-          <div class="main">
+				<!-- JWT Manager Tool -->
+				<div id="tool-jwt-manager" class="tool-panel" role="tabpanel">
+					<div class="main">
 
-            <!-- Left Panel -->
-            <div class="panel-left">
-              <!-- Environment Bar -->
-              <div class="jwt-env-bar">
-                <div class="jwt-env-buttons" id="jwtEnvButtons"></div>
-                <div class="jwt-passphrase-status" id="jwtPassphraseStatus">
-                  <span class="jwt-passphrase-dot" id="jwtPassphraseDot"></span>
-                  <span id="jwtPassphraseLabel">No passphrase</span>
-                </div>
-              </div>
+						<!-- Left Panel -->
+						<div class="panel-left">
+							<!-- Environment Bar -->
+							<div class="jwt-env-bar">
+								<div class="jwt-env-buttons" id="jwtEnvButtons"></div>
+								<div class="jwt-passphrase-status" id="jwtPassphraseStatus">
+									<span class="jwt-passphrase-dot" id="jwtPassphraseDot"></span>
+									<span id="jwtPassphraseLabel">No passphrase</span>
+								</div>
+							</div>
 
-              <!-- Product Bar -->
-              <div class="jwt-product-bar">
-                <div class="jwt-product-buttons" id="jwtProductButtons"></div>
-              </div>
+							<!-- Product Bar -->
+							<div class="jwt-product-bar">
+								<div class="jwt-product-buttons" id="jwtProductButtons"></div>
+							</div>
 
-              <!-- Tab Navigation -->
-              <div class="jwt-tabs">
-                <nav class="tab-navigation">
-                  <button class="tab-btn active" data-jwt-tab="tokens">
-                    <span class="tab-btn-label">Tokens</span>
-                    <span class="tab-btn-hint">Generate &amp; manage</span>
-                  </button>
-                  <button class="tab-btn" data-jwt-tab="decode">
-                    <span class="tab-btn-label">Decode</span>
-                    <span class="tab-btn-hint">Inspect any JWT</span>
-                  </button>
-                  <button class="tab-btn" data-jwt-tab="manage">
-                    <span class="tab-btn-label">Manage</span>
-                    <span class="tab-btn-hint">Add &amp; remove</span>
-                  </button>
-                </nav>
-              </div>
+							<!-- Tab Navigation -->
+							<div class="jwt-tabs">
+								<nav class="tab-navigation">
+									<button class="tab-btn active" data-jwt-tab="tokens">
+										<span class="tab-btn-label">Tokens</span>
+										<span class="tab-btn-hint">Generate &amp; manage</span>
+									</button>
+									<button class="tab-btn" data-jwt-tab="decode">
+										<span class="tab-btn-label">Decode</span>
+										<span class="tab-btn-hint">Inspect any JWT</span>
+									</button>
+									<button class="tab-btn" data-jwt-tab="manage">
+										<span class="tab-btn-label">Manage</span>
+										<span class="tab-btn-hint">Add &amp; remove</span>
+									</button>
+								</nav>
+							</div>
 
-              <!-- Tokens Tab Left: Bulk Generate + Profile -->
-              <div class="jwt-tab-content active" id="jwtTabTokensLeft">
-                <div class="jwt-bulk-bar">
-                  <button class="btn btn-primary btn-sm" id="jwtBulkGenerate">Bulk Generate All</button>
-                </div>
-                <div class="jwt-profile-section">
-                  <label>Generate Profile Token</label>
-                  <div class="jwt-profile-row">
-                    <select id="jwtProfileSelect" class="form-select">
-                      <option value="">Select profile...</option>
-                    </select>
-                    <button class="btn btn-secondary btn-sm" id="jwtProfileGenerate">Generate</button>
-                  </div>
-                </div>
-              </div>
+							<!-- Tokens Tab Left: Bulk Generate + Profile -->
+							<div class="jwt-tab-content active" id="jwtTabTokensLeft">
+								<div class="jwt-bulk-bar">
+									<button class="btn btn-primary btn-sm" id="jwtBulkGenerate">Bulk Generate
+										All</button>
+								</div>
+								<div class="jwt-profile-section">
+									<label>Generate Profile Token</label>
+									<div class="jwt-profile-row">
+										<select id="jwtProfileSelect" class="form-select">
+											<option value="">Select profile...</option>
+										</select>
+										<button class="btn btn-secondary btn-sm"
+											id="jwtProfileGenerate">Generate</button>
+									</div>
+								</div>
+							</div>
 
-              <!-- Decode Tab Left: Input + Badges -->
-              <div class="jwt-tab-content" id="jwtTabDecodeLeft">
-                <div class="jwt-decode-input-section">
-                  <label style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Paste a JWT to decode</label>
-                  <div class="jwt-decode-input-wrapper">
-                    <div class="jwt-decode-overlay" id="jwtDecodeOverlay"></div>
-                    <textarea class="jwt-decode-textarea" id="jwtDecodeInput" placeholder="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3Mi..."></textarea>
-                  </div>
-                  <div class="jwt-decode-badges" id="jwtDecodeBadges"></div>
-                </div>
-              </div>
+							<!-- Decode Tab Left: Input + Badges -->
+							<div class="jwt-tab-content" id="jwtTabDecodeLeft">
+								<div class="jwt-decode-input-section">
+									<label
+										style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Paste
+										a JWT to decode</label>
+									<div class="jwt-decode-input-wrapper">
+										<div class="jwt-decode-overlay" id="jwtDecodeOverlay"></div>
+										<textarea class="jwt-decode-textarea" id="jwtDecodeInput"
+											placeholder="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3Mi..."></textarea>
+									</div>
+									<div class="jwt-decode-badges" id="jwtDecodeBadges"></div>
+								</div>
+							</div>
 
-              <!-- Manage Tab Left: Add Forms -->
-              <div class="jwt-tab-content" id="jwtTabManageLeft">
-                <!-- Add Tenant -->
-                <div class="jwt-manage-section">
-                  <div class="jwt-manage-section-title">Add Tenant</div>
-                  <div class="form-group">
-                    <input id="jwtAddTenantName" class="form-input" placeholder="Name" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Environment</label>
-                    <div class="jwt-env-buttons" id="jwtAddTenantEnvBtns"></div>
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddTenantSub" class="form-input" placeholder="sub (e.g. user@example.com)" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddTenantAid" class="form-input" placeholder="aid" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddTenantL2cid" class="form-input" placeholder="l2cid (UUID)" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddTenantRoles" class="form-input" placeholder="roles (optional, overrides default)" autocomplete="off" />
-                  </div>
-                  <button class="btn btn-primary btn-sm" id="jwtAddTenantBtn">Add Tenant</button>
-                </div>
+							<!-- Manage Tab Left: Add Forms -->
+							<div class="jwt-tab-content" id="jwtTabManageLeft">
+								<!-- Add Tenant -->
+								<div class="jwt-manage-section">
+									<div class="jwt-manage-section-title">Add Tenant</div>
+									<div class="form-group">
+										<input id="jwtAddTenantName" class="form-input" placeholder="Name"
+											autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<label class="form-label">Environment</label>
+										<div class="jwt-env-buttons" id="jwtAddTenantEnvBtns"></div>
+									</div>
+									<div class="form-group">
+										<input id="jwtAddTenantSub" class="form-input"
+											placeholder="sub (e.g. user@example.com)" autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddTenantAid" class="form-input"
+											placeholder="aid (e.g. ai-hub-with-credits-demo)" autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddTenantL2cid" class="form-input" placeholder="l2cid (UUID)"
+											autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddTenantRoles" class="form-input"
+											placeholder="roles (optional, overrides default)" autocomplete="off" />
+									</div>
+									<button class="btn btn-primary btn-sm" id="jwtAddTenantBtn">Add Tenant</button>
+								</div>
 
-                <!-- Add Product -->
-                <div class="jwt-manage-section">
-                  <div class="jwt-manage-section-title">Add Product</div>
-                  <div class="form-group">
-                    <input id="jwtAddProductName" class="form-input" placeholder="Name / key (e.g. my-product)" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddProductIss" class="form-input" placeholder="iss (leave blank to match name)" autocomplete="off" />
-                  </div>
-                  <button class="btn btn-primary btn-sm" id="jwtAddProductBtn">Add Product</button>
-                </div>
+								<!-- Add Product -->
+								<div class="jwt-manage-section">
+									<div class="jwt-manage-section-title">Add Product</div>
+									<div class="form-group">
+										<input id="jwtAddProductName" class="form-input"
+											placeholder="Name / key (e.g. my-product)" autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddProductIss" class="form-input"
+											placeholder="iss (leave blank to match name)" autocomplete="off" />
+									</div>
+									<button class="btn btn-primary btn-sm" id="jwtAddProductBtn">Add Product</button>
+								</div>
 
-                <!-- Add Profile -->
-                <div class="jwt-manage-section">
-                  <div class="jwt-manage-section-title">Add Profile</div>
-                  <div class="form-group">
-                    <input id="jwtAddProfileKey" class="form-input" placeholder="Key (e.g. admin)" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddProfileDesc" class="form-input" placeholder="Description" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddProfileSub" class="form-input" placeholder="sub" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddProfileAid" class="form-input" placeholder="aid" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddProfileUid" class="form-input" placeholder="uid (optional)" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddProfileEmail" class="form-input" placeholder="email (optional)" autocomplete="off" />
-                  </div>
-                  <div class="form-group">
-                    <input id="jwtAddProfileRoles" class="form-input" placeholder="roles (optional)" autocomplete="off" />
-                  </div>
-                  <button class="btn btn-primary btn-sm" id="jwtAddProfileBtn">Add Profile</button>
-                </div>
-              </div>
-            </div>
+								<!-- Add Profile -->
+								<div class="jwt-manage-section">
+									<div class="jwt-manage-section-title">Add Profile</div>
+									<div class="form-group">
+										<input id="jwtAddProfileKey" class="form-input" placeholder="Key (e.g. admin)"
+											autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddProfileDesc" class="form-input" placeholder="Description"
+											autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddProfileSub" class="form-input" placeholder="sub"
+											autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddProfileAid" class="form-input"
+											placeholder="aid (e.g. ai-hub-with-credits-demo)" autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddProfileUid" class="form-input" placeholder="uid (optional)"
+											autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddProfileEmail" class="form-input" placeholder="email (optional)"
+											autocomplete="off" />
+									</div>
+									<div class="form-group">
+										<input id="jwtAddProfileRoles" class="form-input" placeholder="roles (optional)"
+											autocomplete="off" />
+									</div>
+									<button class="btn btn-primary btn-sm" id="jwtAddProfileBtn">Add Profile</button>
+								</div>
+							</div>
+						</div>
 
-            <!-- Right Panel -->
-            <div class="panel-right">
-              <!-- Tokens Tab Right: Profile Result + Bulk Results + Tenant Grid -->
-              <div class="jwt-tab-content active" id="jwtTabTokens">
-                <div class="jwt-panel-right-content">
-                  <!-- Profile Token Result (hidden until generated) -->
-                  <div class="jwt-profile-result hidden" id="jwtProfileResult"></div>
+						<!-- Right Panel -->
+						<div class="panel-right">
+							<!-- Tokens Tab Right: Profile Result + Bulk Results + Tenant Grid -->
+							<div class="jwt-tab-content active" id="jwtTabTokens">
+								<div class="jwt-panel-right-content">
+									<!-- Profile Token Result (hidden until generated) -->
+									<div class="jwt-profile-result hidden" id="jwtProfileResult"></div>
 
-                  <!-- Bulk Results (hidden until generated) -->
-                  <div class="jwt-bulk-results hidden" id="jwtBulkResults">
-                    <table class="data-table">
-                      <thead>
-                        <tr>
-                          <th>Tenant</th>
-                          <th>Status</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody id="jwtBulkResultsBody"></tbody>
-                    </table>
-                    <div class="jwt-bulk-footer">
-                      <button class="btn btn-secondary btn-sm" id="jwtCopyAllBulk">Copy All</button>
-                    </div>
-                  </div>
+									<!-- Bulk Results (hidden until generated) -->
+									<div class="jwt-bulk-results hidden" id="jwtBulkResults">
+										<table class="data-table">
+											<thead>
+												<tr>
+													<th>Tenant</th>
+													<th>Status</th>
+													<th>Actions</th>
+												</tr>
+											</thead>
+											<tbody id="jwtBulkResultsBody"></tbody>
+										</table>
+										<div class="jwt-bulk-footer">
+											<button class="btn btn-secondary btn-sm" id="jwtCopyAllBulk">Copy
+												All</button>
+										</div>
+									</div>
 
-                  <!-- Tenant Grid -->
-                  <div class="jwt-tenant-grid" id="jwtTenantGrid">
-                    <div class="empty-state" id="jwtTenantsEmpty">
-                      <div class="empty-state-icon">&#128273;</div>
-                      <div class="empty-state-text">Select an environment to view tenants</div>
-                      <div class="empty-state-hint">Choose dev, stg, or prod above</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+									<!-- Tenant Grid -->
+									<div class="jwt-tenant-grid" id="jwtTenantGrid">
+										<div class="empty-state" id="jwtTenantsEmpty">
+											<div class="empty-state-icon">&#128273;</div>
+											<div class="empty-state-text">Select an environment to view tenants</div>
+											<div class="empty-state-hint">Choose dev, stg, or prod above</div>
+										</div>
+									</div>
+								</div>
+							</div>
 
-              <!-- Decode Tab Right: Decoded Output -->
-              <div class="jwt-tab-content" id="jwtTabDecode">
-                <div class="jwt-panel-right-content">
-                  <div class="jwt-decode-results" id="jwtDecodeResults">
-                    <div class="empty-state">
-                      <div class="empty-state-icon">&#128270;</div>
-                      <div class="empty-state-text">Paste a JWT to see decoded output</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+							<!-- Decode Tab Right: Decoded Output -->
+							<div class="jwt-tab-content" id="jwtTabDecode">
+								<div class="jwt-panel-right-content">
+									<div class="jwt-decode-results" id="jwtDecodeResults">
+										<div class="empty-state">
+											<div class="empty-state-icon">&#128270;</div>
+											<div class="empty-state-text">Paste a JWT to see decoded output</div>
+										</div>
+									</div>
+								</div>
+							</div>
 
-              <!-- Manage Tab Right: Current Config Lists -->
-              <div class="jwt-tab-content" id="jwtTabManage">
-                <div class="jwt-panel-right-content">
-                  <div class="jwt-manage-list-section">
-                    <div class="jwt-manage-list-header">
-                      <span>Tenants</span>
-                      <span id="jwtManageTenantEnvLabel" class="jwt-manage-env-badge"></span>
-                    </div>
-                    <div id="jwtManageTenantList" class="jwt-manage-list"></div>
-                  </div>
-                  <div class="jwt-manage-list-section">
-                    <div class="jwt-manage-list-header">Products</div>
-                    <div id="jwtManageProductList" class="jwt-manage-list"></div>
-                  </div>
-                  <div class="jwt-manage-list-section">
-                    <div class="jwt-manage-list-header">Profiles</div>
-                    <div id="jwtManageProfileList" class="jwt-manage-list"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+							<!-- Manage Tab Right: Current Config Lists -->
+							<div class="jwt-tab-content" id="jwtTabManage">
+								<div class="jwt-panel-right-content">
+									<div class="jwt-manage-list-section">
+										<div class="jwt-manage-list-header">
+											<span>Tenants</span>
+											<span id="jwtManageTenantEnvLabel" class="jwt-manage-env-badge"></span>
+										</div>
+										<div id="jwtManageTenantList" class="jwt-manage-list"></div>
+									</div>
+									<div class="jwt-manage-list-section">
+										<div class="jwt-manage-list-header">Products</div>
+										<div id="jwtManageProductList" class="jwt-manage-list"></div>
+									</div>
+									<div class="jwt-manage-list-section">
+										<div class="jwt-manage-list-header">Profiles</div>
+										<div id="jwtManageProfileList" class="jwt-manage-list"></div>
+									</div>
+								</div>
+							</div>
+						</div>
 
-          </div>
+					</div>
 
-          <!-- Passphrase Modal (hidden) -->
-          <div class="jwt-modal-backdrop hidden" id="jwtPassphraseModal">
-            <div class="jwt-modal">
-              <h3>Enter Passphrase for <span id="jwtModalEnvLabel">dev</span></h3>
-              <div class="jwt-modal-error hidden" id="jwtModalError"></div>
-              <div class="form-group">
-                <label for="jwtPassphraseInput">Passphrase</label>
-                <input type="password" id="jwtPassphraseInput" class="form-input" placeholder="Enter key passphrase" autocomplete="off">
-              </div>
-              <div class="jwt-modal-actions">
-                <button class="btn btn-secondary btn-sm" id="jwtModalCancel">Cancel</button>
-                <button class="btn btn-primary btn-sm" id="jwtModalSubmit">Unlock</button>
-              </div>
-            </div>
-          </div>
-        </div><!-- /tool-jwt-manager -->
+					<!-- Passphrase Modal (hidden) -->
+					<div class="jwt-modal-backdrop hidden" id="jwtPassphraseModal">
+						<div class="jwt-modal">
+							<h3>Enter Passphrase for <span id="jwtModalEnvLabel">dev</span></h3>
+							<div class="jwt-modal-error hidden" id="jwtModalError"></div>
+							<div class="form-group">
+								<label for="jwtPassphraseInput">Passphrase</label>
+								<input type="password" id="jwtPassphraseInput" class="form-input"
+									placeholder="Enter key passphrase" autocomplete="off">
+							</div>
+							<div class="jwt-modal-actions">
+								<button class="btn btn-secondary btn-sm" id="jwtModalCancel">Cancel</button>
+								<button class="btn btn-primary btn-sm" id="jwtModalSubmit">Unlock</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- /tool-jwt-manager -->
 
-      </div><!-- /app-content -->
+			</div><!-- /app-content -->
 
-      <!-- Bottom nav for mobile -->
-      <div class="app-bottom-nav"></div>
-    </div><!-- /app-body -->
+			<!-- Bottom nav for mobile -->
+			<div class="app-bottom-nav"></div>
+		</div><!-- /app-body -->
 
-  </div>
+	</div>
 
-  <div class="toast" id="toast"></div>
+	<div class="toast" id="toast"></div>
 
-  <!-- Core modules -->
-  <script src="/js/core/utils.js"></script>
-  <script src="/js/core/tool-manifest.js"></script>
-  <script src="/js/core/base-tool.js"></script>
-  <script src="/js/core/tool-registry.js"></script>
-  <script src="/js/core/app-shell.js"></script>
-  <script src="/js/core/tooltip.js"></script>
+	<!-- Core modules -->
+	<script src="/js/core/utils.js"></script>
+	<script src="/js/core/tool-manifest.js"></script>
+	<script src="/js/core/base-tool.js"></script>
+	<script src="/js/core/tool-registry.js"></script>
+	<script src="/js/core/app-shell.js"></script>
+	<script src="/js/core/tooltip.js"></script>
 
-  <!-- Legacy usage calculator (internal module, still needed) -->
-  <script src="/js/usage-calculator.js"></script>
+	<!-- Legacy usage calculator (internal module, still needed) -->
+	<script src="/js/usage-calculator.js"></script>
 
-  <!-- Tool registrations -->
-  <script src="/js/tools/request-generator.js"></script>
-  <script src="/js/tools/usage-calculator.js"></script>
-  <script src="/js/tools/jwt-manager.js"></script>
+	<!-- Tool registrations -->
+	<script src="/js/tools/request-generator.js"></script>
+	<script src="/js/tools/usage-calculator.js"></script>
+	<script src="/js/tools/jwt-manager.js"></script>
 
-  <!-- Boot -->
-  <script src="/js/main.js"></script>
+	<!-- Boot -->
+	<script src="/js/main.js"></script>
 </body>
+
 </html>
